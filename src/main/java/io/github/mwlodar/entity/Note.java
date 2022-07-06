@@ -28,7 +28,7 @@ public class Note {
 	@Column(name="owner")
 	private String owner;
 	
-	@Column(name="created")
+	@Column(name="created") /*xdd*/
 	@CreatedDate
 	Date created;
 
