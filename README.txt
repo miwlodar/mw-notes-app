@@ -15,7 +15,7 @@ These are the same SQL scripts used in the course.
 - setup-spring-security-bcrypt-demo-database.sql: Creates login accounts with encrypted passwords
 
 +---------+----------+-----------------------------+
-| user id | password |            roles xdd            |
+| user id | password |            roles            |
 +---------+----------+-----------------------------+
 | john    | fun123   | ROLE_EMPLOYEE               |
 | mary    | fun123   | ROLE_EMPLOYEE, ROLE_MANAGER |
