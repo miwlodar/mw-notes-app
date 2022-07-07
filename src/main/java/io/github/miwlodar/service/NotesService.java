@@ -1,8 +1,8 @@
-package io.github.mwlodar.service;
+package io.github.miwlodar.service;
 
 import java.util.List;
 
-import io.github.mwlodar.entity.Note;
+import io.github.miwlodar.entity.Note;
 
 public interface NotesService {
 

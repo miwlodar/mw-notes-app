@@ -11,14 +11,14 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
-	<title>Notes Directory</title>
+	<title>Notes Repository</title>
 </head>
 
 <body>
 
 <div class="container">
 
-	<h3>Notes Directory</h3>
+	<h3>Notes Repository</h3>
 	<hr>
 	
 	<div>
@@ -43,19 +43,22 @@
 	<table class="table table-bordered table-striped">
 		<thead class="thead-dark">
 			<tr>
-				<th>Notes repository</th>
+				<th>Title</th>
+				<th>Note</th>
 				<!--<th>Last Name</th>-->
 				<!--<th>Email</th>-->
 
 				<div sec:authorize="hasRole('ROLE_ADMIN')">
 					<th>Action</th>
-				</div>					
+				</div>
+
 			</tr>
 		</thead>
 		
 		<tbody>
 			<tr th:each="tempNote : ${notes}">
-			
+
+				<td th:text="${tempNote.title}" />
 				<td th:text="${tempNote.content}" />
 				<!--<td th:text="${tempEmployee.lastName}" /> -->
 				<!--<td th:text="${tempEmployee.email}" />	-->

@@ -1,4 +1,4 @@
-package io.github.mwlodar.controller;
+package io.github.miwlodar.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

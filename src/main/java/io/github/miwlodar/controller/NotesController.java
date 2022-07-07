@@ -1,8 +1,8 @@
-package io.github.mwlodar.controller;
+package io.github.miwlodar.controller;
 
 import java.util.List;
 
-import io.github.mwlodar.service.NotesService;
+import io.github.miwlodar.service.NotesService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import io.github.mwlodar.entity.Note;
+import io.github.miwlodar.entity.Note;
 
 @Controller
 @RequestMapping("/notes")
@@ -48,8 +48,7 @@ public class NotesController {
 		return "/notes/notes-form";
 	}
 
-	//MW comment: tutaj dzieki @RequestParem bindujemy sobie REQUESTA,
-	// ktorego dostajemy do naszej zmiennej theId, ktora jest uzyta w kodzie ponizej
+
 	@GetMapping("/showFormForUpdate")
 	public String showFormForUpdate(@RequestParam("noteId") int theId,
 									Model theModel) {

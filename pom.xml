@@ -8,7 +8,7 @@
 		<version>2.1.8.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.mw.springboot</groupId>
+	<groupId>io.github.miwlodar</groupId>
 	<artifactId>mw_notes_app</artifactId>
 	<version>1.0.0</version>
 

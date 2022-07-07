@@ -1,10 +1,10 @@
-package io.github.mwlodar.dao;
+package io.github.miwlodar.dao;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import io.github.mwlodar.entity.Note;
+import io.github.miwlodar.entity.Note;
 
 public interface NotesRepository extends JpaRepository<Note, Integer> {
 
@@ -12,9 +12,9 @@ public interface NotesRepository extends JpaRepository<Note, Integer> {
 
 	
 	// add a method to sort by id //ADD TITLE!!!!!!!
-	List<Note> findAllByOrderByIdAsc();
+	List<Note> findAllByOrderByTitleAsc();
 	
 	// search by content of the note //ADD TITLE!!!!!!!!!!!
-	List<Note> findByContentContainsAllIgnoreCase(String content);
+	List<Note> findByTitleContainsOrContentContainsAllIgnoreCase(String title, String content);
 
 }

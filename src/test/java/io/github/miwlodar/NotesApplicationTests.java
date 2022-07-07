@@ -1,4 +1,4 @@
-package io.github.mwlodar;
+package io.github.miwlodar;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

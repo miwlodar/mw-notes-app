@@ -1,4 +1,4 @@
-package io.github.mwlodar.service;
+package io.github.miwlodar.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import io.github.mwlodar.dao.NotesRepository;
-import io.github.mwlodar.entity.Note;
+import io.github.miwlodar.dao.NotesRepository;
+import io.github.miwlodar.entity.Note;
 
 @Service
 public class NotesServiceImpl implements NotesService {
@@ -21,7 +21,7 @@ public class NotesServiceImpl implements NotesService {
 	
 	@Override
 	public List<Note> findAll() {
-		return notesRepository.findAllByOrderByIdAsc();
+		return notesRepository.findAllByOrderByTitleAsc();
 	}
 
 	@Override
@@ -52,12 +52,12 @@ public class NotesServiceImpl implements NotesService {
 	}
 
 	@Override
-	public List<Note> searchBy(String theContent) {
+	public List<Note> searchBy(String theSearch) {
 		
 		List<Note> results = null;
 		
-		if (theContent != null && (theContent.trim().length() > 0)) {
-			results = notesRepository.findByContentContainsAllIgnoreCase(theContent);
+		if (theSearch != null && (theSearch.trim().length() > 0)) {
+			results = notesRepository.findByTitleContainsOrContentContainsAllIgnoreCase(theSearch, theSearch);
 		}
 		else {
 			results = findAll();
@@ -67,9 +67,3 @@ public class NotesServiceImpl implements NotesService {
 	}
 
 }
-
-
-
-
-
-

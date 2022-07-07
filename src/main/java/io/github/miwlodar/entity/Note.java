@@ -1,4 +1,4 @@
-package io.github.mwlodar.entity;
+package io.github.miwlodar.entity;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -21,7 +21,10 @@ public class Note {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
 	private int id;
-	
+
+	@Column(name="title")
+	private String title;
+
 	@Column(name="content")
 	private String content;
 	
@@ -43,27 +46,30 @@ public class Note {
 		
 	}
 
-	public Note(int id, String content, String owner, Date created, Date lastEdited) {
+	public Note(int id, String content, String title, String owner, Date created, Date lastEdited) {
 		this.id = id;
 		this.content = content;
+		this.title = title;
 		this.owner = owner;
 		this.created = created;
 		this.lastEdited = lastEdited;
 	}
 
-	public Note(String content, String owner, Date created, Date lastEdited) {
+	public Note(String content, String title, String owner, Date created, Date lastEdited) {
 		this.content = content;
+		this.title = title;
 		this.owner = owner;
 		this.created = created;
 		this.lastEdited = lastEdited;
 	}
 
-	public Note(String content, String owner) {
+	public Note(String content, String title, String owner) {
 		this.content = content;
+		this.title = title;
 		this.owner = owner;
 	}
 
-// define getter/setter
+	// define getter/setter
 	
 	public int getId() {
 		return id;
@@ -105,6 +111,14 @@ public class Note {
 		this.lastEdited = lastEdited;
 	}
 
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 	// define tostring
 
 	@Override
@@ -112,6 +126,7 @@ public class Note {
 		return "Note{" +
 				"id=" + id +
 				", content='" + content + '\'' +
+				", title='" + title + '\'' +
 				", owner='" + owner + '\'' +
 				", created=" + created +
 				", lastEdited=" + lastEdited +

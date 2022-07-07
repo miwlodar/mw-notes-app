@@ -1,4 +1,4 @@
-package io.github.mwlodar.config;
+package io.github.miwlodar.config;
 
 import javax.sql.DataSource;
 
