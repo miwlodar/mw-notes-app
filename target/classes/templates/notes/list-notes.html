@@ -45,8 +45,8 @@
 			<tr>
 				<th>Title</th>
 				<th>Note</th>
-				<!--<th>Last Name</th>-->
-				<!--<th>Email</th>-->
+				<th>Created</th>
+				<th>Last edited</th>
 
 				<div sec:authorize="hasRole('ROLE_ADMIN')">
 					<th>Action</th>
@@ -60,8 +60,8 @@
 
 				<td th:text="${tempNote.title}" />
 				<td th:text="${tempNote.content}" />
-				<!--<td th:text="${tempEmployee.lastName}" /> -->
-				<!--<td th:text="${tempEmployee.email}" />	-->
+				<td th:text="${tempNote.created}" />
+				<td th:text="${tempNote.lastEdited}" />
 
 				<div sec:authorize="hasRole('ROLE_ADMIN')"> <!--delete?-->
 				
