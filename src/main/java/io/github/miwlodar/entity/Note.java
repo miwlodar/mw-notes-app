@@ -1,22 +1,17 @@
 package io.github.miwlodar.entity;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.sql.Date;
+import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name="notes")
 public class Note {
 
 	// define fields
-	
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
@@ -31,14 +26,13 @@ public class Note {
 	@Column(name="owner")
 	private String owner;
 	
-	@Column(name="created")
-	@CreatedDate
-	Date created;
+	@Column(name="created", nullable = false, updatable = false)
+	@CreationTimestamp
+	private Timestamp created;
 
-	@Column(name="last_edited")
-	@CreatedDate
-	@LastModifiedDate
-	Date lastEdited;
+	@Column(name="last_edited", nullable = false)
+	@UpdateTimestamp
+	private Timestamp lastEdited;
 		
 	// define constructors
 	
@@ -46,7 +40,7 @@ public class Note {
 		
 	}
 
-	public Note(int id, String content, String title, String owner, Date created, Date lastEdited) {
+	public Note(int id, String content, String title, String owner, Timestamp created, Timestamp lastEdited) {
 		this.id = id;
 		this.content = content;
 		this.title = title;
@@ -55,7 +49,7 @@ public class Note {
 		this.lastEdited = lastEdited;
 	}
 
-	public Note(String content, String title, String owner, Date created, Date lastEdited) {
+	public Note(String content, String title, String owner, Timestamp created, Timestamp lastEdited) {
 		this.content = content;
 		this.title = title;
 		this.owner = owner;
@@ -95,19 +89,19 @@ public class Note {
 		this.owner = owner;
 	}
 
-	public Date getCreated() {
+	public Timestamp getCreated() {
 		return created;
 	}
 
-	public void setCreated(Date created) {
+	public void setCreated(Timestamp created) {
 		this.created = created;
 	}
 
-	public Date getLastEdited() {
+	public Timestamp getLastEdited() {
 		return lastEdited;
 	}
 
-	public void setLastEdited(Date lastEdited) {
+	public void setLastEdited(Timestamp lastEdited) {
 		this.lastEdited = lastEdited;
 	}
 
