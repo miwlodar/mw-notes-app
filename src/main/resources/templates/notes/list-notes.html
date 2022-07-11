@@ -30,11 +30,11 @@
 	
     <form th:action="@{/notes/search}" class="form-inline">
 		<a th:href="@{/notes/showFormForAdd}"
-			class="btn btn-primary btn-sm mr-5 mb-3">
+			class="btn btn-primary btn-sm mr-2 mb-3">
 			Add Note
 		</a>
 
-		<input class="form-control  ml-5 mr-sm-2 mb-3" type="search" name="noteName" placeholder="Search by name" />
+		<input class="form-control  ml-0 mr-sm-2 mb-3" type="search" name="noteName" placeholder="Search by title/content" />
 
 		<button class="btn btn-success mb-3" type="submit">Search</button>
     </form>	
@@ -48,7 +48,7 @@
 				<th>Created</th>
 				<th>Last edited</th>
 
-				<div sec:authorize="hasRole('ROLE_ADMIN')">
+				<div sec:authorize="isAuthenticated()">
 					<th>Action</th>
 				</div>
 
@@ -60,13 +60,14 @@
 
 				<td th:text="${tempNote.title}" />
 				<td th:text="${tempNote.content}" />
+<!--				<td th:text="${tempNote.owner}" />-->
 				<td th:text="${tempNote.created}" />
 				<td th:text="${tempNote.lastEdited}" />
 
-				<div sec:authorize="hasRole('ROLE_ADMIN')"> <!--delete?-->
+				<div sec:authorize="isAuthenticated()">
 				
 					<td>
-						<div sec:authorize="hasRole('ROLE_ADMIN')"> <!--delete?-->
+						<div sec:authorize="isAuthenticated()">
 	
 							<!-- Add "update" button/link -->
 							<a th:href="@{/notes/showFormForUpdate(noteId=${tempNote.id})}"
@@ -74,11 +75,11 @@
 								Update
 							</a>
 	
-						</div>					
-					
-						<div sec:authorize="hasRole('ROLE_ADMIN')">  
+						</div>
+
+						<div sec:authorize="isAuthenticated()">
 						
-							<!-- Add "delete" button/link -->					
+							<!-- Add "delete" button/link -->
 							<a th:href="@{/notes/delete(noteId=${tempNote.id})}"
 							   class="btn btn-danger btn-sm"
 							   onclick="if (!(confirm('Are you sure you want to delete this note?'))) return false">

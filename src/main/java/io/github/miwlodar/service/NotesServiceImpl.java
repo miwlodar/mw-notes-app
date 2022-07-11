@@ -1,31 +1,50 @@
 package io.github.miwlodar.service;
 
-import java.util.List;
-import java.util.Optional;
-
+import io.github.miwlodar.dao.NotesRepository;
+import io.github.miwlodar.entity.Note;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import io.github.miwlodar.dao.NotesRepository;
-import io.github.miwlodar.entity.Note;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class NotesServiceImpl implements NotesService {
 
 	private NotesRepository notesRepository;
-	
+
+	private String currentUsername() {
+
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		String username;
+
+		if (principal instanceof UserDetails) {
+			username = ((UserDetails) principal).getUsername();
+		} else {
+			username = principal.toString();
+		}
+		return username;
+	}
+
 	@Autowired // optional - as there's only 1 constructor
 	public NotesServiceImpl(NotesRepository theNoteRepository) {
 		notesRepository = theNoteRepository;
 	}
-	
+
 	@Override
 	public List<Note> findAll() {
-		return notesRepository.findAllByOrderByTitleAsc();
+
+		List<Note> retrievedNotes = notesRepository.findAllByOrderByTitleAsc();
+
+		retrievedNotes.removeIf(note -> !currentUsername().equals(note.getOwner()));
+
+		return retrievedNotes;
 	}
 
+	//no need to add logic for accessing only the notes owned by a given user, since this method is used only for update (not accessible by non-owners anyway)
 	@Override
 	public Note findById(int theId) {
 		Optional<Note> result = notesRepository.findById(theId);
@@ -45,28 +64,27 @@ public class NotesServiceImpl implements NotesService {
 
 	@Override
 	public void save(Note theNote) {
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-		String username;
-		if (principal instanceof UserDetails) {
-			username = ((UserDetails) principal).getUsername();
-		} else {
-			username = principal.toString();
-		}
-		theNote.setOwner(username);
+		theNote.setOwner(currentUsername());
 
 		notesRepository.save(theNote);
 	}
 
 	@Override
 	public void deleteById(int theId) {
-		notesRepository.deleteById(theId);
+
+		List<Note> retrievedNotes = notesRepository.findByIdContainsAndOwnerContainsAllIgnoreCase(theId, currentUsername());
+		for (Note note: retrievedNotes) {
+			if (currentUsername().equals(note.getOwner())) {
+				notesRepository.deleteById(theId);
+			}
+		}
 	}
 
 	@Override
 	public List<Note> searchBy(String theSearch) {
-		
-		List<Note> results = null;
+
+		List<Note> results;
 		
 		if (theSearch != null && (theSearch.trim().length() > 0)) {
 			results = notesRepository.findByTitleContainsOrContentContainsAllIgnoreCase(theSearch, theSearch);
@@ -75,7 +93,8 @@ public class NotesServiceImpl implements NotesService {
 			results = findAll();
 		}
 		
+		results.removeIf(note -> !currentUsername().equals(note.getOwner()));
+
 		return results;
 	}
-
 }
