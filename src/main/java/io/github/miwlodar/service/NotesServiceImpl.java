@@ -49,7 +49,7 @@ public class NotesServiceImpl implements NotesService {
 	public Note findById(int theId) {
 		Optional<Note> result = notesRepository.findById(theId);
 		
-		Note theNote = null;
+		Note theNote;
 		
 		if (result.isPresent()) {
 			theNote = result.get();
