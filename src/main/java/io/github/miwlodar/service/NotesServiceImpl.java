@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import io.github.miwlodar.dao.NotesRepository;
@@ -14,7 +16,7 @@ public class NotesServiceImpl implements NotesService {
 
 	private NotesRepository notesRepository;
 	
-	@Autowired
+	@Autowired // optional - as there's only 1 constructor
 	public NotesServiceImpl(NotesRepository theNoteRepository) {
 		notesRepository = theNoteRepository;
 	}
@@ -43,6 +45,16 @@ public class NotesServiceImpl implements NotesService {
 
 	@Override
 	public void save(Note theNote) {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		String username;
+		if (principal instanceof UserDetails) {
+			username = ((UserDetails) principal).getUsername();
+		} else {
+			username = principal.toString();
+		}
+		theNote.setOwner(username);
+
 		notesRepository.save(theNote);
 	}
 
