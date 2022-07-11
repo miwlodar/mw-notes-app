@@ -22,6 +22,9 @@
 	<hr>
 	
 	<div>
+		Time on server:
+		<td th:text="${#dates.format(#dates.createNow(),'YYYY/MM/dd HH:mm')}" />
+		<br>
 		User: <span sec:authentication="name"></span>
 		<br>
 		Role(s): <span sec:authentication="principal.authorities"></span>
@@ -34,7 +37,7 @@
 			Add Note
 		</a>
 
-		<input class="form-control  ml-0 mr-sm-2 mb-3" type="search" name="noteName" placeholder="Search by title/content" />
+		<input class="form-control  ml-0 mr-sm-2 mb-3" type="search" name="noteName" placeholder="Search by title or content" size="25"/>
 
 		<button class="btn btn-success mb-3" type="submit">Search</button>
     </form>	
@@ -59,7 +62,8 @@
 			<tr th:each="tempNote : ${notes}">
 
 				<td th:text="${tempNote.title}" />
-				<td th:text="${tempNote.content}" />
+				<td style="white-space: pre-line" th:text="${tempNote.content}" />
+<!--				<td th:utext="${#strings.replace(#strings.escapeXml(czesc),T(java.lang.System).getProperty('line.separator'),'&lt;br /&gt;')}" ></td>-->
 <!--				<td th:text="${tempNote.owner}" />-->
 				<td th:text="${tempNote.created}" />
 				<td th:text="${tempNote.lastEdited}" />

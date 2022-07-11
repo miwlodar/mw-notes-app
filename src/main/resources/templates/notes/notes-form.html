@@ -16,10 +16,10 @@
 
 	<div class="container">
 	
-		<h3>Note Directory</h3>
+		<h3>Note Creator</h3>
 		<hr>
 		
-		<p class="h4 mb-4">Add Note</p>
+		<p class="h4 mb-4">Add a new note</p>
 	
 		<form th:action="@{/notes/save}"
 			  th:object="${notes}" method="POST">
@@ -30,8 +30,8 @@
 			<input type="text" th:field="*{title}"
 				   class="form-control mb-4 col-4" placeholder="Title">
 			
-			<input type="text" th:field="*{content}"
-					class="form-control mb-4 col-4" placeholder="Content">
+			<textarea rows="5" cols="25" type="text" th:field="*{content}"
+					class="form-control mb-4 col-9" placeholder="Content"></textarea>
 
 			<input type="hidden" th:field="*{owner}"
 					class="form-control mb-4 col-4" placeholder="Owner">
@@ -47,7 +47,7 @@
 		</form>
 	
 		<hr>
-		<a th:href="@{/notes/list}">Back to Notes List</a>
+		<a th:href="@{/notes/list}">Back to Notes Repository</a>
 		
 	</div>
 </body>
