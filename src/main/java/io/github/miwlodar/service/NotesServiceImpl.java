@@ -73,6 +73,7 @@ public class NotesServiceImpl implements NotesService {
 	@Override
 	public void deleteById(int theId) {
 
+		//checking if the user is the note's owner
 		List<Note> retrievedNotes = notesRepository.findByIdContainsAndOwnerContainsAllIgnoreCase(theId, currentUsername());
 		for (Note note: retrievedNotes) {
 			if (currentUsername().equals(note.getOwner())) {

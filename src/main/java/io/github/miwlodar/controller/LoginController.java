@@ -21,5 +21,12 @@ public class LoginController {
 		return "access-denied";
 		
 	}
+
+
+//	@GetMapping("/")
+//	public String showHome() {
+//
+//		return "/notes/list-notes";
+//	}
 	
 }
