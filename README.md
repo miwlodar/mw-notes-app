@@ -3,8 +3,10 @@
 Application for online notes/memos management
 by Michal Wlodarczyk (2022)
 
+
 ## Description
 Backend (mostly) app coded in Java (Spring framework)
+
 
 ### Technologies used
 - Java
@@ -12,6 +14,7 @@ Backend (mostly) app coded in Java (Spring framework)
 - MySQL
 - Maven
 - Thymeleaf
+- 
 
 ### App functions/modules
 - custom registration and login (incl. fields validation)
@@ -21,14 +24,13 @@ Backend (mostly) app coded in Java (Spring framework)
 - all CRUD operations for notes
 - basic frontend using Thymeleaf (REST API communication also possible)
 
+
 DB pre-populated with the following seed records:
 
 | user id | password | role |
 |---------|----------|------|
 | mike    | pass123  | ROLE_ADMIN |
-|---------|----------|------|
 | marty   | pass123  | ROLE_USER |
-|---------|----------|------|
 | jenny   | pass123  | ROLE_USER |
 
 SQL script included in the project.
