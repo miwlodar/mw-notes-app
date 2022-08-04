@@ -14,15 +14,15 @@ Backend (mostly) app coded in Java (Spring framework)
 - MySQL
 - Maven
 - Thymeleaf
-- 
+
 
 ### App functions/modules
 - custom registration and login (incl. fields validation)
-- login with Google/Facebook
-- assigning roles to users
-- BCrypt passwords encryption
+- OAuth2 authentication with Google and Facebook
+- Separate roles for users and admin
+- BCrypt password encryption
 - all CRUD operations for notes
-- basic frontend using Thymeleaf (REST API communication also possible)
+- basic frontend using Thymeleaf (REST API calls also possible)
 
 
 DB pre-populated with the following seed records:

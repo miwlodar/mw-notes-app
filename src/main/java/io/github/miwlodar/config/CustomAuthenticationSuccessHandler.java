@@ -27,14 +27,14 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
 		String userName = authentication.getName();
 		
-		System.out.println("Logged in user=" + userName);
+		System.out.println("Logged-in user = " + userName);
 
 		Users theUser = userService.findByUserName(userName);
-		
+
 		// now place in the session
 		HttpSession session = request.getSession();
 		session.setAttribute("user", theUser);
-		
+
 		// forward to login page
 		
 		response.sendRedirect(request.getContextPath() + "/");

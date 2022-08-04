@@ -2,6 +2,7 @@ package io.github.miwlodar.config;
 
 import javax.sql.DataSource;
 
+import io.github.miwlodar.service.CustomOAuth2UserService;
 import io.github.miwlodar.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -14,6 +15,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -54,11 +56,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.successHandler(customAuthenticationSuccessHandler)
 				.permitAll()
 			.and()
-			.logout().permitAll()
-			.and()
-			.exceptionHandling().accessDeniedPage("/access-denied");
-		
+			.logout().permitAll();
+
+		http.authorizeRequests()
+				.antMatchers("/", "/showMyLoginPage", "/oauth/**").permitAll()
+				.anyRequest().authenticated()
+				.and()
+				.formLogin().permitAll()
+				.and()
+				.oauth2Login()
+					.loginPage("/showMyLoginPage")
+					.userInfoEndpoint()
+						.userService(oauthUserService)
+					.and()
+					.successHandler(customAuthenticationSuccessHandler);
 	}
+
+	@Autowired
+	private CustomOAuth2UserService oauthUserService;
 
 	//beans
 	//bcrypt bean definition

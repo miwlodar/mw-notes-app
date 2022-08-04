@@ -26,9 +26,8 @@
 		<td th:text="${#dates.format(#dates.createNow(),'YYYY/MM/dd HH:mm')}" />
 		<br>
 		User: <span sec:authentication="name"></span>
-		<br>
-		Role(s): <span sec:authentication="principal.authorities"></span>
-		<br><br>
+<!--		<br>-->
+<!--		Role(s): <span sec:authentication="principal.authorities"></span>-->
 	</div>
 	
     <form th:action="@{/notes/search}" class="form-inline">
