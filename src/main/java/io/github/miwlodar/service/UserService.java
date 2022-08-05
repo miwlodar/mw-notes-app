@@ -1,3 +1,4 @@
+//interface for Users service - all CRUD methods, implemented in a separate class - in line with a common design pattern
 package io.github.miwlodar.service;
 
 import io.github.miwlodar.entity.Users;

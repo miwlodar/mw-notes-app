@@ -1,3 +1,4 @@
+//CRM class for User details with fields validation conducted during custom registration
 package io.github.miwlodar.user;
 
 import io.github.miwlodar.validation.FieldMatch;

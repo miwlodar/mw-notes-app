@@ -1,3 +1,4 @@
+//implementation of User service interface, providing logic for a couple of methods for accessing User data
 package io.github.miwlodar.service;
 
 import io.github.miwlodar.dao.RoleDao;
@@ -13,7 +14,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
-	// need to inject user dao
 	@Autowired
 	private UserDao userDao;
 
@@ -34,7 +33,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public Users findByUserName(String userName) {
-		// check the database if the user already exists
+
+		// checking the database if the user already exists
 		return userDao.findByUserName(userName);
 	}
 
@@ -42,17 +42,16 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public void save(CrmUser crmUser) {
 		Users user = new Users();
-		 // assign user details to the user object
+
 		user.setUserName(crmUser.getUserName());
 		user.setPassword(passwordEncoder.encode(crmUser.getPassword()));
 		user.setFirstName(crmUser.getFirstName());
 		user.setLastName(crmUser.getLastName());
 		user.setEmail(crmUser.getEmail());
 
-		// give user default role of "user"
+		// giving user default role of "user"
 		user.setRoles(Arrays.asList(roleDao.findRoleByName("ROLE_USER")));
 
-		 // save user in the database
 		userDao.save(user);
 	}
 

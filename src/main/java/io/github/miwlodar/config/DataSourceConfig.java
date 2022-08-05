@@ -1,7 +1,8 @@
+//class for datasource config, required for custom registration
+
 package io.github.miwlodar.config;
 
 import javax.sql.DataSource;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;

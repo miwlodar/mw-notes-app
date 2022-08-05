@@ -40,7 +40,6 @@
 					            <div>
 								
 									<!-- Check for login error -->
-								
 									<div th:if="${param.error}">
 										
 										<div class="alert alert-danger col-xs-offset-1 col-xs-10">
@@ -50,7 +49,6 @@
 									</div>
 										
 									<!-- Check for logout -->
-
 									<div th:if="${param.logout}">
 										            
 										<div class="alert alert-success col-xs-offset-1 col-xs-10">
@@ -100,10 +98,7 @@
 				<img th:src="@{https://icons-for-free.com/download-icon-super+tiny+icons+google-1324450732314261527_48.png}"/>
 				<a th:href="@{/oauth2/authorization/google}" class="btn btn-success" role="button">Login with Google</a>
 			</div>
-
 		</div>
-
 	</div>
-
 </body>
 </html>

@@ -18,8 +18,8 @@ Backend (mostly) app coded in Java (Spring framework)
 
 ### App functions/modules
 - custom registration and login (incl. fields validation)
-- OAuth2 authentication with Google and Facebook
-- Separate roles for users and admin
+- OAuth2 authentication with Google
+- Separate roles for users and admin (admin can access and delete all notes)
 - BCrypt password encryption
 - all CRUD operations for notes
 - basic frontend using Thymeleaf (REST API calls also possible)

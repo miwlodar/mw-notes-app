@@ -1,16 +1,14 @@
+//ORM class with mapping given Note fields to DB columns
 package io.github.miwlodar.entity;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
 @Table(name="notes")
 public class Note {
-
-	// define fields
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -33,11 +31,8 @@ public class Note {
 	@Column(name="last_edited", nullable = false)
 	@UpdateTimestamp
 	private Timestamp lastEdited;
-		
-	// define constructors
-	
+
 	public Note() {
-		
 	}
 
 	public Note(int id, String content, String title, String owner, Timestamp created, Timestamp lastEdited) {
@@ -63,8 +58,6 @@ public class Note {
 		this.owner = owner;
 	}
 
-	// define getter/setter
-	
 	public int getId() {
 		return id;
 	}
@@ -113,8 +106,6 @@ public class Note {
 		this.title = title;
 	}
 
-	// define tostring
-
 	@Override
 	public String toString() {
 		return "Note{" +
@@ -126,7 +117,6 @@ public class Note {
 				", lastEdited=" + lastEdited +
 				'}';
 	}
-
 }
 
 

@@ -1,3 +1,5 @@
+//1 of 3 controllers - handling login page (and access denied)
+
 package io.github.miwlodar.controller;
 
 import org.springframework.stereotype.Controller;
@@ -12,9 +14,7 @@ public class LoginController {
 		return "custom-login";
 		
 	}
-	
-	// add request mapping for /access-denied
-	
+
 	@GetMapping("/access-denied")
 	public String showAccessDenied() {
 		

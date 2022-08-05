@@ -1,3 +1,4 @@
+//1 of 3 controllers - handling custom registration in line with MVC design pattern
 package io.github.miwlodar.controller;
 
 import io.github.miwlodar.entity.Users;
@@ -10,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.logging.Logger;
 
@@ -21,7 +21,7 @@ public class RegistrationController {
     @Autowired
     private UserService userService;
 	
-    private Logger logger = Logger.getLogger(getClass().getName());
+    private final Logger logger = Logger.getLogger(getClass().getName());
     
 	@InitBinder
 	public void initBinder(WebDataBinder dataBinder) {
@@ -47,13 +47,12 @@ public class RegistrationController {
 		
 		String userName = theCrmUser.getUserName();
 		logger.info("Processing registration form for: " + userName);
-		
-		// form validation
+
 		 if (theBindingResult.hasErrors()){
 			 return "registration-form";
 	        }
 
-		// check the database if user already exists
+		// checking the DB if user already exists
         Users existing = userService.findByUserName(userName);
         if (existing != null){
         	theModel.addAttribute("crmUser", new CrmUser());
@@ -62,8 +61,7 @@ public class RegistrationController {
 			logger.warning("User name already exists.");
         	return "registration-form";
         }
-        
-        // create user account        						
+
         userService.save(theCrmUser);
         
         logger.info("Successfully created user: " + userName);

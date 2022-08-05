@@ -1,7 +1,8 @@
+//security configuration class for either Google authenticated users or users authenticated in a custom way
+
 package io.github.miwlodar.config;
 
 import javax.sql.DataSource;
-
 import io.github.miwlodar.service.CustomOAuth2UserService;
 import io.github.miwlodar.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,25 +11,20 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
+
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	// add a reference to our security data source
-	
 	@Autowired
 	@Qualifier("securityDataSource")
 	private DataSource securityDataSource;
 
-	// add a reference to the user service
 	@Autowired
 	private UserService userService;
 
@@ -43,10 +39,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-//			.antMatchers("/notes/showForm*").hasRole("ADMIN")
-//			.antMatchers("/notes/save*").hasRole("ADMIN")
-//			.antMatchers("/notes/delete").hasRole("ADMIN")
-//			.antMatchers("/notes/delete").hasRole("USER")
 			.antMatchers("/notes/**").hasAnyRole("ADMIN", "USER")
 			.antMatchers("/resources/**").permitAll()
 			.and()
@@ -58,6 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 			.logout().permitAll();
 
+		//security configuration for Google authentication (OAuth2)
 		http.authorizeRequests()
 				.antMatchers("/", "/showMyLoginPage", "/oauth/**").permitAll()
 				.anyRequest().authenticated()

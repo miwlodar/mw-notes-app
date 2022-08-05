@@ -1,3 +1,4 @@
+//service method for OAuth2 (used for Google authentication)
 package io.github.miwlodar.service;
 
 import io.github.miwlodar.config.CustomOAuth2User;

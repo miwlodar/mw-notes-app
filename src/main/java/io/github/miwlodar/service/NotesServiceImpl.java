@@ -1,3 +1,4 @@
+//probably the most complex class of the app - implementing all the logic for CRUD operations on notes (taking into account the different approach to OAuth2 objects)
 package io.github.miwlodar.service;
 
 import io.github.miwlodar.config.CustomOAuth2User;
@@ -55,14 +56,12 @@ public class NotesServiceImpl implements NotesService {
 
 		if (!currentUsername().contains("www.googleapis.com/auth/userinfo.profile")) {
 			Users user = userDao.findByUserName(userName);
-			if ((user.getRoles().toString()).contains("ROLE_ADMIN")) {
-				return true;
-			}
+			return (user.getRoles().toString()).contains("ROLE_ADMIN");
 		}
 		return false;
 	}
 
-	@Autowired // optional - as there's only 1 constructor
+	@Autowired
 	public NotesServiceImpl(NotesRepository theNoteRepository) {
 		notesRepository = theNoteRepository;
 	}
@@ -79,7 +78,6 @@ public class NotesServiceImpl implements NotesService {
 		return retrievedNotes;
 	}
 
-	//no need to add logic for accessing only the notes owned by a given user, since this method is used only for update (not accessible by non-owners anyway)
 	@Override
 	public Note findById(int theId) {
 		Optional<Note> result = notesRepository.findById(theId);
@@ -90,7 +88,6 @@ public class NotesServiceImpl implements NotesService {
 			theNote = result.get();
 		}
 		else {
-			// when the note is not found
 			throw new RuntimeException("Did not find note id - " + theId);
 		}
 		
@@ -109,14 +106,13 @@ public class NotesServiceImpl implements NotesService {
 
 	@Override
 	public void deleteById(int theId) {
+		//retrieving the note and checking if the user is the note's owner. Admin can delete every note.
+		List<Note> retrievedNotes = notesRepository.findByIdContainsAllIgnoreCase(theId);
 
-		//checking if the user is the note's owner. Admin can delete every note.
-		List<Note> retrievedNotes = notesRepository.findByIdContainsAndOwnerContainsAllIgnoreCase(theId, currentUserEmail());
-		for (Note note: retrievedNotes) {
-			if (currentUserEmail().equals(note.getOwner()) || isAdmin()) {
-				notesRepository.deleteById(theId);
-			}
+		if (!isAdmin()) {
+			retrievedNotes.removeIf(note -> !currentUserEmail().equals(note.getOwner()));
 		}
+		notesRepository.deleteById(theId);
 	}
 
 	@Override
@@ -131,7 +127,7 @@ public class NotesServiceImpl implements NotesService {
 			results = findAll();
 		}
 
-		//admin can see all the notes, but all other user - only their notes
+		//admin can see all the notes, but all other user - only their own notes
 		if (!isAdmin()) {
 			results.removeIf(note -> !currentUserEmail().equals(note.getOwner()));
 		}

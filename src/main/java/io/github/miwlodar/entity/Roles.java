@@ -1,3 +1,4 @@
+//ORM class with mapping given Roles fields to DB columns
 package io.github.miwlodar.entity;
 
 import javax.persistence.*;
