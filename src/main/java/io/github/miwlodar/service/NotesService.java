@@ -9,12 +9,12 @@ public interface NotesService {
 
 	List<Note> findAll();
 	
-	Note findById(int theId);
+	Note findById(int id);
 	
-	void save(Note theNote);
+	void save(Note note);
 	
-	void deleteById(int theId);
+	void deleteById(int id);
 
-	List<Note> searchBy(String theName);
+	List<Note> searchBy(String name);
 	
 }

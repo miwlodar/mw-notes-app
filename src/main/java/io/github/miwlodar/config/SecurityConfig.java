@@ -43,8 +43,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/resources/**").permitAll()
 			.and()
 			.formLogin()
-				.loginPage("/showMyLoginPage")
-				.loginProcessingUrl("/authenticateTheUser")
+				.loginPage("/show-my-login-page")
+				.loginProcessingUrl("/authenticateUser")
 				.successHandler(customAuthenticationSuccessHandler)
 				.permitAll()
 			.and()
@@ -52,13 +52,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		//security configuration for Google authentication (OAuth2)
 		http.authorizeRequests()
-				.antMatchers("/", "/showMyLoginPage", "/oauth/**").permitAll()
+				.antMatchers("/", "/show-my-login-page", "/oauth/**").permitAll()
 				.anyRequest().authenticated()
 				.and()
 				.formLogin().permitAll()
 				.and()
 				.oauth2Login()
-					.loginPage("/showMyLoginPage")
+					.loginPage("/show-my-login-page")
 					.userInfoEndpoint()
 						.userService(oauthUserService)
 					.and()
@@ -85,9 +85,3 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 		
 }
-
-
-
-
-
-

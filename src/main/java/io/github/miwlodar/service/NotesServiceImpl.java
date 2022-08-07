@@ -62,8 +62,8 @@ public class NotesServiceImpl implements NotesService {
 	}
 
 	@Autowired
-	public NotesServiceImpl(NotesRepository theNoteRepository) {
-		notesRepository = theNoteRepository;
+	public NotesServiceImpl(NotesRepository noteRepository) {
+		notesRepository = noteRepository;
 	}
 
 	@Override
@@ -79,49 +79,47 @@ public class NotesServiceImpl implements NotesService {
 	}
 
 	@Override
-	public Note findById(int theId) {
-		Optional<Note> result = notesRepository.findById(theId);
+	public Note findById(int id) {
+		Optional<Note> result = notesRepository.findById(id);
 		
-		Note theNote;
+		Note note;
 		
 		if (result.isPresent()) {
-			theNote = result.get();
+			note = result.get();
 		}
 		else {
-			throw new RuntimeException("Did not find note id - " + theId);
+			throw new RuntimeException("Did not find note id - " + id);
 		}
 		
-		return theNote;
+		return note;
 	}
 
 	@Override
-	public void save(Note theNote) {
+	public void save(Note note) {
 
-		theNote.setOwner(currentUserEmail());
+		note.setOwner(currentUserEmail());
 
-		System.out.println("Owner who added the note: " + theNote.getOwner());
-
-		notesRepository.save(theNote);
+		notesRepository.save(note);
 	}
 
 	@Override
-	public void deleteById(int theId) {
+	public void deleteById(int id) {
 		//retrieving the note and checking if the user is the note's owner. Admin can delete every note.
-		List<Note> retrievedNotes = notesRepository.findByIdContainsAllIgnoreCase(theId);
+		List<Note> retrievedNotes = notesRepository.findByIdContainsAllIgnoreCase(id);
 
 		if (!isAdmin()) {
 			retrievedNotes.removeIf(note -> !currentUserEmail().equals(note.getOwner()));
 		}
-		notesRepository.deleteById(theId);
+		notesRepository.deleteById(id);
 	}
 
 	@Override
-	public List<Note> searchBy(String theSearch) {
+	public List<Note> searchBy(String name) {
 
 		List<Note> results;
 		
-		if (theSearch != null && (theSearch.trim().length() > 0)) {
-			results = notesRepository.findByTitleContainsOrContentContainsAllIgnoreCase(theSearch, theSearch);
+		if (name != null && (name.trim().length() > 0)) {
+			results = notesRepository.findByTitleContainsOrContentContainsAllIgnoreCase(name, name);
 		}
 		else {
 			results = findAll();

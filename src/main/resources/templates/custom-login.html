@@ -31,7 +31,7 @@
 				<div style="padding-top: 30px" class="panel-body">
 
 					<!-- Login Form -->
-					<form th:action="@{/authenticateTheUser}" 
+					<form th:action="@{/authenticateUser}"
 						  method="POST" class="form-horizontal">
 
 					    <!-- Place for messages: error, alert etc ... -->
@@ -89,7 +89,7 @@
 			</div>
 
 			<div>
-				<a th:href="@{/register/showRegistrationForm}" class="btn btn-primary" role="button" aria-pressed="true">Register New User</a>
+				<a th:href="@{/register/show-registration-form}" class="btn btn-primary" role="button" aria-pressed="true">Register New User</a>
 			</div>
 
 			<p> </p>

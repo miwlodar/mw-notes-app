@@ -15,21 +15,21 @@ public class RoleDaoImpl implements RoleDao {
 	private EntityManager entityManager;
 
 	@Override
-	public Roles findRoleByName(String theRoleName) {
+	public Roles findRoleByName(String roleName) {
 
 		Session currentSession = entityManager.unwrap(Session.class);
 
-		Query<Roles> theQuery = currentSession.createQuery("from Roles where name=:roleName", Roles.class);
-		theQuery.setParameter("roleName", theRoleName);
+		Query<Roles> query = currentSession.createQuery("from Roles where name=:roleName", Roles.class);
+		query.setParameter("roleName", roleName);
 		
-		Roles theRole = null;
+		Roles role = null;
 		
 		try {
-			theRole = theQuery.getSingleResult();
+			role = query.getSingleResult();
 		} catch (Exception e) {
-			theRole = null;
+			role = null;
 		}
 		
-		return theRole;
+		return role;
 	}
 }

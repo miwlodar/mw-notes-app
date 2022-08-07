@@ -5,7 +5,7 @@ import io.github.miwlodar.entity.Users;
 
 public interface UserDao {
 
-    public Users findByUserName(String userName);
+    Users findByUserName(String userName);
     
-    public void save(Users user);
+    void save(Users user);
 }

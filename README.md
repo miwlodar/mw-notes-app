@@ -9,11 +9,11 @@ Backend (mostly) app coded in Java (Spring framework)
 
 
 ### Technologies used
-- Java
+- Java 11
 - Spring (incl. Spring Boot, Spring MVC, Spring REST, Spring Security)
-- MySQL
+- MySQL and MySQL Workbench
 - Maven
-- Thymeleaf
+- Thymeleaf (simple front-end)
 
 
 ### App functions/modules
@@ -33,4 +33,10 @@ DB pre-populated with the following seed records:
 | marty   | pass123  | ROLE_USER |
 | jenny   | pass123  | ROLE_USER |
 
-SQL script included in the project.
+
+### How to run and use the app
+
+1. Create the seed database - run SQL script included in the project with MySQL Workbench (sql-scripts/NotesAppDatabase.sql)
+2. Run the main app (src/main/java/io/github/miwlodar/NotesApplication.java) using JDK 11
+3. Use one of the seed accounts listed above or log in with Google
+4. Enjoy the mw_notes_app equipped with all CRUD operations and more!

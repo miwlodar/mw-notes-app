@@ -29,7 +29,7 @@
 	</div>
 	
     <form th:action="@{/notes/search}" class="form-inline">
-		<a th:href="@{/notes/showFormForAdd}"
+		<a th:href="@{/notes/form-for-add}"
 			class="btn btn-primary btn-sm mr-2 mb-3">
 			Add Note
 		</a>
@@ -69,7 +69,7 @@
 						<div sec:authorize="isAuthenticated()">
 	
 							<!-- "update" button/link -->
-							<a th:href="@{/notes/showFormForUpdate(noteId=${tempNote.id})}"
+							<a th:href="@{/notes/form-for-update(noteId=${tempNote.id})}"
 							   class="btn btn-info btn-sm">
 								Update
 							</a>

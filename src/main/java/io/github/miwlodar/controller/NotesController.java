@@ -18,38 +18,38 @@ public class NotesController {
 
 	private final NotesService notesService;
 	
-	public NotesController(NotesService theNotesService) {
-		notesService = theNotesService;
+	public NotesController(NotesService notesService) {
+		this.notesService = notesService;
 	}
 
 	@GetMapping("/list")
-	public String listNotes(Model theModel) {
+	public String listNotes(Model model) {
 
-		List<Note> theNotes = notesService.findAll();
+		List<Note> notes = notesService.findAll();
 
-		theModel.addAttribute("notes", theNotes);
+		model.addAttribute("notes", notes);
 		
 		return "/notes/list-notes";
 	}
 	
-	@GetMapping("/showFormForAdd")
-	public String showFormForAdd(Model theModel) {
+	@GetMapping("/form-for-add")
+	public String formForAdd(Model model) {
 
-		Note theNote = new Note();
+		Note note = new Note();
 		
-		theModel.addAttribute("notes", theNote);
+		model.addAttribute("notes", note);
 		
 		return "/notes/notes-form";
 	}
 
 
-	@GetMapping("/showFormForUpdate")
-	public String showFormForUpdate(@RequestParam("noteId") int theId,
-									Model theModel) {
+	@GetMapping("/form-for-update")
+	public String formForUpdate(@RequestParam("noteId") int id,
+									Model model) {
 
-		Note theNote = notesService.findById(theId);
+		Note note = notesService.findById(id);
 
-		theModel.addAttribute("notes", theNote);
+		model.addAttribute("notes", note);
 
 		return "/notes/notes-form";
 	}
@@ -65,40 +65,22 @@ public class NotesController {
 	
 	
 	@GetMapping("/delete")
-	public String delete(@RequestParam("noteId") int theId) {
+	public String delete(@RequestParam("noteId") int id) {
 
-		notesService.deleteById(theId);
+		notesService.deleteById(id);
 
 		return "redirect:/notes/list";
 	}
 	
 	@GetMapping("/search")
-	public String delete(@RequestParam("noteName") String theName,
-						 Model theModel) {
+	public String search(@RequestParam("noteName") String name,
+						 Model model) {
 
-		List<Note> theNotes = notesService.searchBy(theName);
+		List<Note> notes = notesService.searchBy(name);
 
-		theModel.addAttribute("notes", theNotes);
+		model.addAttribute("notes", notes);
 
 		return "/notes/list-notes";
 		
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

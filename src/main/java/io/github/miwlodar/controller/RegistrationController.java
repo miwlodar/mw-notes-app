@@ -31,38 +31,38 @@ public class RegistrationController {
 		dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
 	}	
 	
-	@GetMapping("/showRegistrationForm")
-	public String showMyLoginPage(Model theModel) {
+	@GetMapping("/show-registration-form")
+	public String showMyLoginPage(Model model) {
 		
-		theModel.addAttribute("crmUser", new CrmUser());
+		model.addAttribute("crmUser", new CrmUser());
 		
 		return "registration-form";
 	}
 
-	@PostMapping("/processRegistrationForm")
+	@PostMapping("/process-registration-form")
 	public String processRegistrationForm(
-				@Valid @ModelAttribute("crmUser") CrmUser theCrmUser, 
-				BindingResult theBindingResult, 
-				Model theModel) {
+				@Valid @ModelAttribute("crmUser") CrmUser crmUser,
+				BindingResult bindingResult,
+				Model model) {
 		
-		String userName = theCrmUser.getUserName();
+		String userName = crmUser.getUserName();
 		logger.info("Processing registration form for: " + userName);
 
-		 if (theBindingResult.hasErrors()){
+		 if (bindingResult.hasErrors()){
 			 return "registration-form";
 	        }
 
 		// checking the DB if user already exists
         Users existing = userService.findByUserName(userName);
         if (existing != null){
-        	theModel.addAttribute("crmUser", new CrmUser());
-			theModel.addAttribute("registrationError", "User name already exists.");
+        	model.addAttribute("crmUser", new CrmUser());
+			model.addAttribute("registrationError", "User name already exists.");
 
 			logger.warning("User name already exists.");
         	return "registration-form";
         }
 
-        userService.save(theCrmUser);
+        userService.save(crmUser);
         
         logger.info("Successfully created user: " + userName);
         
