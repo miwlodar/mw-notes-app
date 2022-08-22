@@ -1,7 +1,7 @@
 //implementation of User DAO interface (2 methods)
 package io.github.miwlodar.dao;
 
-import io.github.miwlodar.entity.Users;
+import io.github.miwlodar.entity.User;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +15,12 @@ public class UserDaoImpl implements UserDao {
 	private EntityManager entityManager;
 
 	@Override
-	public Users findByUserName(String userName) {
-
+	public User findByUserName(String userName) {
 		Session currentSession = entityManager.unwrap(Session.class);
 
-		Query<Users> query = currentSession.createQuery("from Users where userName=:uName", Users.class);
+		Query<User> query = currentSession.createQuery("from User where userName=:uName", User.class);
 		query.setParameter("uName", userName);
-		Users user = null;
+		User user = null;
 		try {
 			user = query.getSingleResult();
 		} catch (Exception e) {
@@ -32,10 +31,8 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public void save(Users user) {
-
+	public void save(User user) {
 		Session currentSession = entityManager.unwrap(Session.class);
-
 		currentSession.saveOrUpdate(user);
 	}
 }

@@ -1,8 +1,8 @@
 //DAO interface for handling roles (admin/user)
 package io.github.miwlodar.dao;
 
-import io.github.miwlodar.entity.Roles;
+import io.github.miwlodar.entity.Role;
 
 public interface RoleDao {
-	Roles findRoleByName(String roleName);
+	Role findRoleByName(String roleName);
 }

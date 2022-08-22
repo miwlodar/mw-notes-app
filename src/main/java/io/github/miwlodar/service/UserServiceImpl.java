@@ -3,9 +3,9 @@ package io.github.miwlodar.service;
 
 import io.github.miwlodar.dao.RoleDao;
 import io.github.miwlodar.dao.UserDao;
-import io.github.miwlodar.entity.Roles;
-import io.github.miwlodar.entity.Users;
-import io.github.miwlodar.user.CrmUser;
+import io.github.miwlodar.entity.Role;
+import io.github.miwlodar.entity.User;
+import io.github.miwlodar.user.CreateUserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public Users findByUserName(String userName) {
+	public User findByUserName(String userName) {
 
 		// checking the database if the user already exists
 		return userDao.findByUserName(userName);
@@ -40,14 +40,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public void save(CrmUser crmUser) {
-		Users user = new Users();
+	public void save(CreateUserDto createUserDto) {
+		User user = new User();
 
-		user.setUserName(crmUser.getUserName());
-		user.setPassword(passwordEncoder.encode(crmUser.getPassword()));
-		user.setFirstName(crmUser.getFirstName());
-		user.setLastName(crmUser.getLastName());
-		user.setEmail(crmUser.getEmail());
+		user.setUserName(createUserDto.getUserName());
+		user.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
+		user.setFirstName(createUserDto.getFirstName());
+		user.setLastName(createUserDto.getLastName());
+		user.setEmail(createUserDto.getEmail());
 
 		// giving user default role of "user"
 		user.setRoles(Arrays.asList(roleDao.findRoleByName("ROLE_USER")));
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-		Users user = userDao.findByUserName(userName);
+		User user = userDao.findByUserName(userName);
 		if (user == null) {
 			throw new UsernameNotFoundException("Invalid username or password.");
 		}
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
 				mapRolesToAuthorities(user.getRoles()));
 	}
 
-	private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Roles> roles) {
+	private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
 		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
 	}
 }

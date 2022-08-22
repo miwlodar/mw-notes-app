@@ -1,7 +1,7 @@
 //service method for OAuth2 (used for Google authentication)
 package io.github.miwlodar.service;
 
-import io.github.miwlodar.config.CustomOAuth2User;
+import io.github.miwlodar.config.GoogleOauth2User;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -14,7 +14,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService  {
     @Override
     public OAuth2User loadUser(final OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User user =  super.loadUser(userRequest);
-        return new CustomOAuth2User(user);
+        return new GoogleOauth2User(user);
     }
 
 }

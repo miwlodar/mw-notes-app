@@ -2,18 +2,17 @@
 package io.github.miwlodar.service;
 
 import java.util.List;
-
 import io.github.miwlodar.entity.Note;
 
 public interface NotesService {
 
 	List<Note> findAll();
 	
-	Note findById(int id);
+	Note findById(Long id);
 	
 	void save(Note note);
 	
-	void deleteById(int id);
+	void deleteById(Long id);
 
 	List<Note> searchBy(String name);
 	

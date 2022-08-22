@@ -1,4 +1,4 @@
-//ORM class with mapping given Note fields to DB columns
+//ORM class with mapping Note's fields to DB columns
 package io.github.miwlodar.entity;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -13,7 +13,7 @@ public class Note {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
-	private int id;
+	private Long id;
 
 	@Column(name="title")
 	private String title;
@@ -35,7 +35,7 @@ public class Note {
 	public Note() {
 	}
 
-	public Note(int id, String content, String title, String owner, Timestamp created, Timestamp lastEdited) {
+	public Note(Long id, String content, String title, String owner, Timestamp created, Timestamp lastEdited) {
 		this.id = id;
 		this.content = content;
 		this.title = title;
@@ -58,11 +58,11 @@ public class Note {
 		this.owner = owner;
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

@@ -1,7 +1,7 @@
 //implementation of Role DAO interface (1 method)
 package io.github.miwlodar.dao;
 
-import io.github.miwlodar.entity.Roles;
+import io.github.miwlodar.entity.Role;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +15,13 @@ public class RoleDaoImpl implements RoleDao {
 	private EntityManager entityManager;
 
 	@Override
-	public Roles findRoleByName(String roleName) {
-
+	public Role findRoleByName(String roleName) {
 		Session currentSession = entityManager.unwrap(Session.class);
 
-		Query<Roles> query = currentSession.createQuery("from Roles where name=:roleName", Roles.class);
+		Query<Role> query = currentSession.createQuery("from Role where name=:roleName", Role.class);
 		query.setParameter("roleName", roleName);
 		
-		Roles role = null;
+		Role role = null;
 		
 		try {
 			role = query.getSingleResult();

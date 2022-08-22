@@ -1,11 +1,11 @@
-//ORM class with mapping given Roles fields to DB columns
+//ORM class with mapping Role's fields to DB columns
 package io.github.miwlodar.entity;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "roles")
-public class Roles {
+public class Role {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,10 +15,10 @@ public class Roles {
 	@Column(name = "name")
 	private String name;
 
-	public Roles() {
+	public Role() {
 	}
 
-	public Roles(String name) {
+	public Role(String name) {
 		this.name = name;
 	}
 

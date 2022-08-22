@@ -2,7 +2,7 @@
 
 package io.github.miwlodar.config;
 
-import io.github.miwlodar.entity.Users;
+import io.github.miwlodar.entity.User;
 import io.github.miwlodar.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -26,7 +26,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
 		String userName = authentication.getName();
 
-		Users user = userService.findByUserName(userName);
+		User user = userService.findByUserName(userName);
 
 		HttpSession session = request.getSession();
 		session.setAttribute("user", user);

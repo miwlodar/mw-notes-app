@@ -1,4 +1,4 @@
-//ORM class with mapping given Users' fields to DB columns
+//ORM class with mapping User's fields to DB columns
 package io.github.miwlodar.entity;
 
 import javax.persistence.*;
@@ -6,7 +6,7 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "users")
-public class Users {
+public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,12 +32,12 @@ public class Users {
 	@JoinTable(name = "users_roles", 
 	joinColumns = @JoinColumn(name = "user_id"), 
 	inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private Collection<io.github.miwlodar.entity.Roles> roles;
+	private Collection<Role> roles;
 
-	public Users() {
+	public User() {
 	}
 
-	public Users(String userName, String password, String firstName, String lastName, String email) {
+	public User(String userName, String password, String firstName, String lastName, String email) {
 		this.userName = userName;
 		this.password = password;
 		this.firstName = firstName;
@@ -45,8 +45,8 @@ public class Users {
 		this.email = email;
 	}
 
-	public Users(String userName, String password, String firstName, String lastName, String email,
-				 Collection<io.github.miwlodar.entity.Roles> roles) {
+	public User(String userName, String password, String firstName, String lastName, String email,
+				Collection<Role> roles) {
 		this.userName = userName;
 		this.password = password;
 		this.firstName = firstName;
@@ -103,11 +103,11 @@ public class Users {
 		this.email = email;
 	}
 
-	public Collection<io.github.miwlodar.entity.Roles> getRoles() {
+	public Collection<Role> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(Collection<io.github.miwlodar.entity.Roles> roles) {
+	public void setRoles(Collection<Role> roles) {
 		this.roles = roles;
 	}
 

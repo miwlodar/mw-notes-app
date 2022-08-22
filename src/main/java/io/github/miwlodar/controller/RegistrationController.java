@@ -1,9 +1,9 @@
 //1 of 3 controllers - handling custom registration in line with MVC design pattern
 package io.github.miwlodar.controller;
 
-import io.github.miwlodar.entity.Users;
+import io.github.miwlodar.entity.User;
 import io.github.miwlodar.service.UserService;
-import io.github.miwlodar.user.CrmUser;
+import io.github.miwlodar.user.CreateUserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
@@ -17,35 +17,32 @@ import java.util.logging.Logger;
 @Controller
 @RequestMapping("/register")
 public class RegistrationController {
-	
+
     @Autowired
     private UserService userService;
-	
+
     private final Logger logger = Logger.getLogger(getClass().getName());
     
 	@InitBinder
 	public void initBinder(WebDataBinder dataBinder) {
-		
 		StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
-		
 		dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
 	}	
 	
 	@GetMapping("/show-registration-form")
-	public String showMyLoginPage(Model model) {
-		
-		model.addAttribute("crmUser", new CrmUser());
+	public String showRegistrationForm(Model model) {
+		model.addAttribute("CreateUserDto", new CreateUserDto());
 		
 		return "registration-form";
 	}
 
 	@PostMapping("/process-registration-form")
 	public String processRegistrationForm(
-				@Valid @ModelAttribute("crmUser") CrmUser crmUser,
+				@Valid @ModelAttribute("CreateUserDto") CreateUserDto createUserDto,
 				BindingResult bindingResult,
 				Model model) {
 		
-		String userName = crmUser.getUserName();
+		String userName = createUserDto.getUserName();
 		logger.info("Processing registration form for: " + userName);
 
 		 if (bindingResult.hasErrors()){
@@ -53,17 +50,16 @@ public class RegistrationController {
 	        }
 
 		// checking the DB if user already exists
-        Users existing = userService.findByUserName(userName);
+        User existing = userService.findByUserName(userName);
         if (existing != null){
-        	model.addAttribute("crmUser", new CrmUser());
+        	model.addAttribute("CreateUserDto", new CreateUserDto());
 			model.addAttribute("registrationError", "User name already exists.");
-
 			logger.warning("User name already exists.");
+
         	return "registration-form";
         }
 
-        userService.save(crmUser);
-        
+        userService.save(createUserDto);
         logger.info("Successfully created user: " + userName);
         
         return "registration-confirmation";		

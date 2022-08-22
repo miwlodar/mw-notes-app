@@ -18,7 +18,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -31,6 +30,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
+	@Autowired
+	private CustomOAuth2UserService oauthUserService;
+
+	@Bean
+	public BCryptPasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
+	@Bean
+	public DaoAuthenticationProvider authenticationProvider() {
+		DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
+		auth.setUserDetailsService(userService); //set the custom user details service
+		auth.setPasswordEncoder(passwordEncoder()); //set the password encoder - bcrypt
+		return auth;
+	}
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.authenticationProvider(authenticationProvider());
@@ -41,6 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 			.antMatchers("/notes/**").hasAnyRole("ADMIN", "USER")
 			.antMatchers("/resources/**").permitAll()
+				.antMatchers("/register/**").permitAll()
 			.and()
 			.formLogin()
 				.loginPage("/show-my-login-page")
@@ -64,24 +80,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 					.and()
 					.successHandler(customAuthenticationSuccessHandler);
 	}
-
-	@Autowired
-	private CustomOAuth2UserService oauthUserService;
-
-	//beans
-	//bcrypt bean definition
-	@Bean
-	public BCryptPasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-
-	//authenticationProvider bean definition
-	@Bean
-	public DaoAuthenticationProvider authenticationProvider() {
-		DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
-		auth.setUserDetailsService(userService); //set the custom user details service
-		auth.setPasswordEncoder(passwordEncoder()); //set the password encoder - bcrypt
-		return auth;
-	}
-		
 }

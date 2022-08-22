@@ -1,11 +1,11 @@
 //probably the most complex class of the app - implementing all the logic for CRUD operations on notes (taking into account the different approach to OAuth2 objects)
 package io.github.miwlodar.service;
 
-import io.github.miwlodar.config.CustomOAuth2User;
+import io.github.miwlodar.config.GoogleOauth2User;
 import io.github.miwlodar.dao.NotesRepository;
 import io.github.miwlodar.dao.UserDao;
 import io.github.miwlodar.entity.Note;
-import io.github.miwlodar.entity.Users;
+import io.github.miwlodar.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,45 +21,6 @@ public class NotesServiceImpl implements NotesService {
 
 	@Autowired
 	private UserDao userDao;
-
-	private String currentUsername() {
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-		String username;
-
-		if (principal instanceof UserDetails) {
-			username = ((UserDetails) principal).getUsername();
-		} else {
-			username = principal.toString();
-		}
-		return username;
-	}
-
-	private String currentUserEmail() {
-		//checking if the user was authorised by Google or in other way and retrieving user's email (to assign it to 'owner' field in DB)
-		if (currentUsername().contains("www.googleapis.com/auth/userinfo.profile")) {
-			final OAuth2User oAuth2User = (OAuth2User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			final CustomOAuth2User oauthUser = new CustomOAuth2User(oAuth2User);
-
-			return oauthUser.getEmail();
-		}
-		else {
-			String userName = currentUsername();
-			Users user = userDao.findByUserName(userName);
-
-			return user.getEmail();
-		}
-	}
-
-	private boolean isAdmin() {
-		String userName = currentUsername();
-
-		if (!currentUsername().contains("www.googleapis.com/auth/userinfo.profile")) {
-			Users user = userDao.findByUserName(userName);
-			return (user.getRoles().toString()).contains("ROLE_ADMIN");
-		}
-		return false;
-	}
 
 	@Autowired
 	public NotesServiceImpl(NotesRepository noteRepository) {
@@ -79,7 +40,7 @@ public class NotesServiceImpl implements NotesService {
 	}
 
 	@Override
-	public Note findById(int id) {
+	public Note findById(Long id) {
 		Optional<Note> result = notesRepository.findById(id);
 		
 		Note note;
@@ -103,7 +64,7 @@ public class NotesServiceImpl implements NotesService {
 	}
 
 	@Override
-	public void deleteById(int id) {
+	public void deleteById(Long id) {
 		//retrieving the note and checking if the user is the note's owner. Admin can delete every note.
 		List<Note> retrievedNotes = notesRepository.findByIdContainsAllIgnoreCase(id);
 
@@ -130,5 +91,45 @@ public class NotesServiceImpl implements NotesService {
 			results.removeIf(note -> !currentUserEmail().equals(note.getOwner()));
 		}
 		return results;
+	}
+
+	private String currentUsername() {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		String username;
+
+		if (principal instanceof UserDetails) {
+			username = ((UserDetails) principal).getUsername();
+		} else {
+			username = principal.toString();
+		}
+
+		return username;
+	}
+
+	private String currentUserEmail() {
+		//checking if the user was authorised by Google or in other way and retrieving user's email (to assign it to 'owner' field in DB)
+		if (currentUsername().contains("www.googleapis.com/auth/userinfo.profile")) {
+			final OAuth2User oAuth2User = (OAuth2User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			final GoogleOauth2User oauthUser = new GoogleOauth2User(oAuth2User);
+
+			return oauthUser.getEmail();
+		}
+		else {
+			String userName = currentUsername();
+			User user = userDao.findByUserName(userName);
+
+			return user.getEmail();
+		}
+	}
+
+	private boolean isAdmin() {
+		String userName = currentUsername();
+
+		if (!currentUsername().contains("www.googleapis.com/auth/userinfo.profile")) {
+			User user = userDao.findByUserName(userName);
+			return (user.getRoles().toString()).contains("ROLE_ADMIN");
+		}
+		return false;
 	}
 }
