@@ -39,4 +39,6 @@ DB pre-populated with the following seed records:
 1. Create the seed database - run SQL script included in the project with MySQL Workbench (sql-scripts/NotesAppDatabase.sql)
 2. Run the main app (src/main/java/io/github/miwlodar/NotesApplication.java) using JDK 11
 3. Use one of the seed accounts listed above or log in with Google
-4. Enjoy the mw_notes_app equipped with all CRUD operations and more!
+4. Enjoy the mw_notes_app equipped with all CRUD operations and more!*
+
+*Oauth2 Google credentials available upon request
