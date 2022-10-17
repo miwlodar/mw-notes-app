@@ -8,13 +8,13 @@ import static org.assertj.core.api.Assertions.fail;
 
 public class DummyTest {
 
-    @Test
-    void should_always_pass() {
-        assertThat(true).isTrue();
-    }
-
-    @Disabled("Ignored test case, never comment out tests.")
-    void should_always_fail() {
-        fail("I will always fail");
-    }
+//    @Test
+//    void should_always_pass() {
+//        assertThat(true).isTrue();
+//    }
+//
+//    @Test
+//    void should_always_fail() {
+//        fail("I will always fail");
+//    }
 }
