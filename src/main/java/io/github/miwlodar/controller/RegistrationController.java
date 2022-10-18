@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.util.logging.Logger;
 
@@ -22,46 +23,46 @@ public class RegistrationController {
     private UserService userService;
 
     private final Logger logger = Logger.getLogger(getClass().getName());
-    
-	@InitBinder
-	public void initBinder(WebDataBinder dataBinder) {
-		StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
-		dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
-	}	
-	
-	@GetMapping("/show-registration-form")
-	public String showRegistrationForm(Model model) {
-		model.addAttribute("CreateUserDto", new CreateUserDto());
-		
-		return "registration-form";
-	}
 
-	@PostMapping("/process-registration-form")
-	public String processRegistrationForm(
-				@Valid @ModelAttribute("CreateUserDto") CreateUserDto createUserDto,
-				BindingResult bindingResult,
-				Model model) {
-		
-		String userName = createUserDto.getUserName();
-		logger.info("Processing registration form for: " + userName);
+    @InitBinder
+    public void initBinder(WebDataBinder dataBinder) {
+        StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+        dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
+    }
 
-		 if (bindingResult.hasErrors()){
-			 return "registration-form";
-	        }
+    @GetMapping("/show-registration-form")
+    public String showRegistrationForm(Model model) {
+        model.addAttribute("CreateUserDto", new CreateUserDto());
 
-		// checking the DB if user already exists
+        return "registration-form";
+    }
+
+    @PostMapping("/process-registration-form")
+    public String processRegistrationForm(
+            @Valid @ModelAttribute("CreateUserDto") CreateUserDto createUserDto,
+            BindingResult bindingResult,
+            Model model) {
+
+        String userName = createUserDto.getUserName();
+        logger.info("Processing registration form for: " + userName);
+
+        if (bindingResult.hasErrors()) {
+            return "registration-form";
+        }
+
+        // checking the DB if user already exists
         User existing = userService.findByUserName(userName);
-        if (existing != null){
-        	model.addAttribute("CreateUserDto", new CreateUserDto());
-			model.addAttribute("registrationError", "User name already exists.");
-			logger.warning("User name already exists.");
+        if (existing != null) {
+            model.addAttribute("CreateUserDto", new CreateUserDto());
+            model.addAttribute("registrationError", "User name already exists.");
+            logger.warning("User name already exists.");
 
-        	return "registration-form";
+            return "registration-form";
         }
 
         userService.save(createUserDto);
         logger.info("Successfully created user: " + userName);
-        
-        return "registration-confirmation";		
-	}
+
+        return "registration-confirmation";
+    }
 }

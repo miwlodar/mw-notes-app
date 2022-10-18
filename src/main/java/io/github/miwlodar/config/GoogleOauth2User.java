@@ -2,10 +2,11 @@
 
 package io.github.miwlodar.config;
 
-import java.util.Collection;
-import java.util.Map;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+
+import java.util.Collection;
+import java.util.Map;
 
 public class GoogleOauth2User implements OAuth2User {
 

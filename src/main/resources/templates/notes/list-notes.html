@@ -79,12 +79,10 @@
 						<div sec:authorize="isAuthenticated()">
 						
 							<!-- "delete" button/link -->
-							<a th:href="@{/notes/delete(noteId=${tempNote.id})}"
-							   class="btn btn-danger btn-sm"
-							   onclick="if (!(confirm('Are you sure you want to delete this note?'))) return false">
-								Delete
-							</a>
-	
+							<form th:action=@{/notes/delete(noteId=${tempNote.id})} th:method="delete">
+								<button class="btn btn-danger btn-sm"
+										onclick="if (!(confirm('Are you sure you want to delete this note?'))) return false">Delete</button>
+							</form>
 						</div>					
 					</td>
 

@@ -2,8 +2,7 @@
 
 package io.github.miwlodar.config;
 
-import javax.sql.DataSource;
-import io.github.miwlodar.service.CustomOAuth2UserService;
+import io.github.miwlodar.service.GoogleOAuth2UserService;
 import io.github.miwlodar.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,68 +15,70 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.sql.DataSource;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	@Qualifier("securityDataSource")
-	private DataSource securityDataSource;
+    @Autowired
+    @Qualifier("securityDataSource")
+    private DataSource securityDataSource; // TODO Remove?
 
-	@Autowired
-	private UserService userService;
+    @Autowired
+    private UserService userService;
 
-	@Autowired
-	private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    @Autowired
+    private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
-	@Autowired
-	private CustomOAuth2UserService oauthUserService;
+    @Autowired
+    private GoogleOAuth2UserService oauthUserService;
 
-	@Bean
-	public BCryptPasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-	@Bean
-	public DaoAuthenticationProvider authenticationProvider() {
-		DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
-		auth.setUserDetailsService(userService); //set the custom user details service
-		auth.setPasswordEncoder(passwordEncoder()); //set the password encoder - bcrypt
-		return auth;
-	}
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
+        auth.setUserDetailsService(userService); //set the custom user details service
+        auth.setPasswordEncoder(passwordEncoder()); //set the password encoder - bcrypt
+        return auth;
+    }
 
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.authenticationProvider(authenticationProvider());
-	}
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authenticationProvider());
+    }
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
-			.antMatchers("/notes/**").hasAnyRole("ADMIN", "USER")
-			.antMatchers("/resources/**").permitAll()
-				.antMatchers("/register/**").permitAll()
-			.and()
-			.formLogin()
-				.loginPage("/show-my-login-page")
-				.loginProcessingUrl("/authenticateUser")
-				.successHandler(customAuthenticationSuccessHandler)
-				.permitAll()
-			.and()
-			.logout().permitAll();
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .antMatchers("/notes/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/resources/**").permitAll()
+                .antMatchers("/register/**").permitAll()
+                .and()
+                .formLogin()
+                .loginPage("/show-my-login-page")
+                .loginProcessingUrl("/authenticateUser")
+                .successHandler(customAuthenticationSuccessHandler)
+                .permitAll()
+                .and()
+                .logout().permitAll();
 
-		//security configuration for Google authentication (OAuth2)
-		http.authorizeRequests()
-				.antMatchers("/", "/show-my-login-page", "/oauth/**").permitAll()
-				.anyRequest().authenticated()
-				.and()
-				.formLogin().permitAll()
-				.and()
-				.oauth2Login()
-					.loginPage("/show-my-login-page")
-					.userInfoEndpoint()
-						.userService(oauthUserService)
-					.and()
-					.successHandler(customAuthenticationSuccessHandler);
-	}
+        //security configuration for Google authentication (OAuth2)
+        http.authorizeRequests()
+                .antMatchers("/", "/show-my-login-page", "/oauth/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin().permitAll()
+                .and()
+                .oauth2Login()
+                .loginPage("/show-my-login-page")
+                .userInfoEndpoint()
+                .userService(oauthUserService)
+                .and()
+                .successHandler(customAuthenticationSuccessHandler);
+    }
 }

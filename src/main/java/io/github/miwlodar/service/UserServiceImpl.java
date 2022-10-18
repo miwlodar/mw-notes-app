@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -21,52 +22,52 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
-	@Autowired
-	private UserDao userDao;
+    @Autowired
+    private UserDao userDao;
 
-	@Autowired
-	private RoleDao roleDao;
-	
-	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private RoleDao roleDao;
 
-	@Override
-	@Transactional
-	public User findByUserName(String userName) {
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
-		// checking the database if the user already exists
-		return userDao.findByUserName(userName);
-	}
+    @Override
+    @Transactional
+    public User findByUserName(String userName) {
 
-	@Override
-	@Transactional
-	public void save(CreateUserDto createUserDto) {
-		User user = new User();
+        // checking the database if the user already exists
+        return userDao.findByUserName(userName);
+    }
 
-		user.setUserName(createUserDto.getUserName());
-		user.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
-		user.setFirstName(createUserDto.getFirstName());
-		user.setLastName(createUserDto.getLastName());
-		user.setEmail(createUserDto.getEmail());
+    @Override
+    @Transactional
+    public void save(CreateUserDto createUserDto) {
+        User user = new User();
 
-		// giving user default role of "user"
-		user.setRoles(Arrays.asList(roleDao.findRoleByName("ROLE_USER")));
+        user.setUserName(createUserDto.getUserName());
+        user.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
+        user.setFirstName(createUserDto.getFirstName());
+        user.setLastName(createUserDto.getLastName());
+        user.setEmail(createUserDto.getEmail());
 
-		userDao.save(user);
-	}
+        // giving user default role of "user"
+        user.setRoles(Arrays.asList(roleDao.findRoleByName("ROLE_USER")));
 
-	@Override
-	@Transactional
-	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-		User user = userDao.findByUserName(userName);
-		if (user == null) {
-			throw new UsernameNotFoundException("Invalid username or password.");
-		}
-		return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(),
-				mapRolesToAuthorities(user.getRoles()));
-	}
+        userDao.save(user);
+    }
 
-	private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
-		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
-	}
+    @Override
+    @Transactional
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+        User user = userDao.findByUserName(userName);
+        if (user == null) {
+            throw new UsernameNotFoundException("Invalid username or password.");
+        }
+        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(),
+                mapRolesToAuthorities(user.getRoles()));
+    }
+
+    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
+        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+    }
 }

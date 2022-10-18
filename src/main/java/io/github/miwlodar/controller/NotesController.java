@@ -6,66 +6,63 @@ import io.github.miwlodar.service.NotesService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @Controller
 @RequestMapping("/notes")
 public class NotesController {
 
-	private final NotesService notesService;
+    private final NotesService notesService;
 
-	public NotesController(NotesService notesService) {
-		this.notesService = notesService;
-	}
+    public NotesController(NotesService notesService) {
+        this.notesService = notesService;
+    }
 
-	@GetMapping("/list")
-	public String listNotes(Model model) {
-		List<Note> notes = notesService.findAll();
-		model.addAttribute("notes", notes);
+    @GetMapping("/list")
+    public String listNotes(Model model) {
+        List<Note> notes = notesService.findAll();
+        model.addAttribute("notes", notes);
 
-		return "/notes/list-notes";
-	}
-	
-	@GetMapping("/form-for-add")
-	public String formForAdd(Model model) {
-		Note note = new Note();
-		model.addAttribute("notes", note);
-		
-		return "/notes/notes-form";
-	}
+        return "/notes/list-notes";
+    }
 
+    @GetMapping("/form-for-add")
+    public String formForAdd(Model model) {
+        Note note = new Note();
+        model.addAttribute("notes", note);
 
-	@GetMapping("/form-for-update")
-	public String formForUpdate(@RequestParam("noteId") Long id,
-								Model model) {
-		Note note = notesService.findById(id);
-		model.addAttribute("notes", note);
+        return "/notes/notes-form";
+    }
 
-		return "/notes/notes-form";
-	}
-	
-	
-	@PostMapping("/save")
-	public String saveNote(@ModelAttribute("notes") Note theNote) {
-		notesService.save(theNote);
+    @GetMapping("/form-for-update")
+    public String formForUpdate(@RequestParam("noteId") Long id, Model model) {
+        Note note = notesService.findById(id);
+        model.addAttribute("notes", note);
 
-		return "redirect:/notes/list";
-	}
-	
-	
-	@GetMapping("/delete")
-	public String delete(@RequestParam("noteId") Long id) {
-		notesService.deleteById(id);
+        return "/notes/notes-form";
+    }
 
-		return "redirect:/notes/list";
-	}
-	
-	@GetMapping("/search")
-	public String search(@RequestParam("noteName") String name,
-						 Model model) {
-		List<Note> notes = notesService.searchBy(name);
-		model.addAttribute("notes", notes);
+    @PostMapping("/save")
+    public String saveNote(@ModelAttribute("notes") Note theNote) {
+        notesService.save(theNote);
 
-		return "/notes/list-notes";
-	}
+        return "redirect:/notes/list";
+    }
+
+    @DeleteMapping("/delete")
+    public String delete(@RequestParam("noteId") Long id) {
+        notesService.deleteById(id);
+
+        return "redirect:/notes/list";
+    }
+
+    @GetMapping("/search")
+    public String search(@RequestParam("noteName") String name,
+                         Model model) {
+        List<Note> notes = notesService.searchBy(name);
+        model.addAttribute("notes", notes);
+
+        return "/notes/list-notes";
+    }
 }

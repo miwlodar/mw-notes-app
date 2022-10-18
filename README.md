@@ -11,6 +11,7 @@ Backend (mostly) app coded in Java (Spring framework)
 ### Technologies used
 - Java 11
 - Spring (incl. Spring Boot, Spring MVC, Spring REST, Spring Security)
+- Hibernate
 - MySQL and MySQL Workbench
 - Maven
 - Thymeleaf (simple front-end)
