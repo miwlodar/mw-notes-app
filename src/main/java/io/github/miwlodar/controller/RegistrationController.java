@@ -51,11 +51,12 @@ public class RegistrationController {
         }
 
         // checking the DB if user already exists
-        User existing = userService.findByUserName(userName);
+        final User existing = userService.findByUserName(userName);
+
         if (existing != null) {
             model.addAttribute("CreateUserDto", new CreateUserDto());
             model.addAttribute("registrationError", "User name already exists.");
-            LOGGER.warn("User name already exists.");
+            LOGGER.info("User name already exists: " + userName);
 
             return "registration-form";
         }
