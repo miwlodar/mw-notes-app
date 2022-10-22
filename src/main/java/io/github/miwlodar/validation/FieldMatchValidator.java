@@ -12,21 +12,22 @@ public class FieldMatchValidator implements ConstraintValidator<FieldMatch, Obje
     private String message;
 
     @Override
-    public void initialize(final FieldMatch constraintAnnotation) {
+    public void initialize(FieldMatch constraintAnnotation) {
         firstFieldName = constraintAnnotation.first();
         secondFieldName = constraintAnnotation.second();
         message = constraintAnnotation.message();
     }
 
     @Override
-    public boolean isValid(final Object value, final ConstraintValidatorContext context) {
+    public boolean isValid(Object value, ConstraintValidatorContext context) {
         boolean valid = true;
+
         try {
             final Object firstObj = new BeanWrapperImpl(value).getPropertyValue(firstFieldName);
             final Object secondObj = new BeanWrapperImpl(value).getPropertyValue(secondFieldName);
 
             valid = firstObj == null && secondObj == null || firstObj != null && firstObj.equals(secondObj);
-        } catch (final Exception ignore) {
+        } catch (Exception ignore) {
         }
 
         if (!valid) {
