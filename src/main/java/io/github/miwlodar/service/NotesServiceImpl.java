@@ -3,10 +3,9 @@ package io.github.miwlodar.service;
 
 import io.github.miwlodar.config.GoogleOauth2User;
 import io.github.miwlodar.dao.NotesRepository;
-import io.github.miwlodar.dao.UserDao;
+import io.github.miwlodar.dao.UserRepository;
 import io.github.miwlodar.entity.Note;
 import io.github.miwlodar.entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -18,9 +17,13 @@ import java.util.Optional;
 @Service
 public class NotesServiceImpl implements NotesService {
 
-    @Autowired
-    public NotesServiceImpl(NotesRepository noteRepository) {
-        notesRepository = noteRepository;
+    private final NotesRepository notesRepository;
+
+    private final UserRepository userRepository;
+
+    public NotesServiceImpl(NotesRepository notesRepository, UserRepository userRepository) {
+        this.notesRepository = notesRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -107,7 +110,7 @@ public class NotesServiceImpl implements NotesService {
             return oauthUser.getEmail();
         } else {
             String userName = currentUsername();
-            User user = userDao.findByUserName(userName);
+            User user = userRepository.findByUserName(userName);
 
             return user.getEmail();
         }
@@ -117,14 +120,9 @@ public class NotesServiceImpl implements NotesService {
         String userName = currentUsername();
 
         if (!currentUsername().contains("www.googleapis.com/auth/userinfo.profile")) {
-            User user = userDao.findByUserName(userName);
+            User user = userRepository.findByUserName(userName);
             return (user.getRoles().toString()).contains("ROLE_ADMIN");
         }
         return false;
     }
-
-    private final NotesRepository notesRepository;
-
-    @Autowired
-    private UserDao userDao;
 }

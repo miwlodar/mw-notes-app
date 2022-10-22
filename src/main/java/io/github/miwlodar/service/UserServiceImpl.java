@@ -1,12 +1,11 @@
 //implementation of User service interface, providing logic for a couple of methods for accessing User data
 package io.github.miwlodar.service;
 
-import io.github.miwlodar.dao.RoleDao;
-import io.github.miwlodar.dao.UserDao;
+import io.github.miwlodar.dao.RolesRepository;
+import io.github.miwlodar.dao.UserRepository;
 import io.github.miwlodar.entity.Role;
 import io.github.miwlodar.entity.User;
 import io.github.miwlodar.user.CreateUserDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,28 +14,29 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserDao userDao;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private RoleDao roleDao;
+    private final RolesRepository rolesRepository;
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    public UserServiceImpl(UserRepository userRepository, RolesRepository rolesRepository, BCryptPasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.rolesRepository = rolesRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
-    @Transactional
     public User findByUserName(String userName) {
-
         // checking the database if the user already exists
-        return userDao.findByUserName(userName);
+        return userRepository.findByUserName(userName);
     }
 
     @Override
@@ -51,15 +51,15 @@ public class UserServiceImpl implements UserService {
         user.setEmail(createUserDto.getEmail());
 
         // giving user default role of "user"
-        user.setRoles(Arrays.asList(roleDao.findRoleByName("ROLE_USER")));
+        user.setRoles(Set.of(rolesRepository.findByName("ROLE_USER").get()));
 
-        userDao.save(user);
+        userRepository.save(user);
     }
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        User user = userDao.findByUserName(userName);
+        User user = userRepository.findByUserName(userName);
         if (user == null) {
             throw new UsernameNotFoundException("Invalid username or password.");
         }

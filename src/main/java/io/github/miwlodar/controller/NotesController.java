@@ -3,6 +3,7 @@ package io.github.miwlodar.controller;
 
 import io.github.miwlodar.entity.Note;
 import io.github.miwlodar.service.NotesService;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class NotesController {
         this.notesService = notesService;
     }
 
-    @GetMapping("/list")
+    @GetMapping
     public String listNotes(Model model) {
         List<Note> notes = notesService.findAll();
         model.addAttribute("notes", notes);
@@ -47,14 +48,14 @@ public class NotesController {
     public String saveNote(@ModelAttribute("notes") Note theNote) {
         notesService.save(theNote);
 
-        return "redirect:/notes/list";
+        return "redirect:/notes";
     }
 
-    @DeleteMapping("/delete")
-    public String delete(@RequestParam("noteId") Long id) {
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable Long id) {
         notesService.deleteById(id);
 
-        return "redirect:/notes/list";
+        return "redirect:/notes";
     }
 
     @GetMapping("/search")

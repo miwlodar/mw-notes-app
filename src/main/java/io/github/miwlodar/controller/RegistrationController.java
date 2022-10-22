@@ -4,6 +4,8 @@ package io.github.miwlodar.controller;
 import io.github.miwlodar.entity.User;
 import io.github.miwlodar.service.UserService;
 import io.github.miwlodar.user.CreateUserDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
@@ -13,7 +15,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/register")
@@ -22,7 +23,7 @@ public class RegistrationController {
     @Autowired
     private UserService userService;
 
-    private final Logger logger = Logger.getLogger(getClass().getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationController.class);
 
     @InitBinder
     public void initBinder(WebDataBinder dataBinder) {
@@ -44,7 +45,7 @@ public class RegistrationController {
             Model model) {
 
         String userName = createUserDto.getUserName();
-        logger.info("Processing registration form for: " + userName);
+        LOGGER.info("Processing registration form for: " + userName);
 
         if (bindingResult.hasErrors()) {
             return "registration-form";
@@ -55,13 +56,13 @@ public class RegistrationController {
         if (existing != null) {
             model.addAttribute("CreateUserDto", new CreateUserDto());
             model.addAttribute("registrationError", "User name already exists.");
-            logger.warning("User name already exists.");
+            LOGGER.warn("User name already exists.");
 
             return "registration-form";
         }
 
         userService.save(createUserDto);
-        logger.info("Successfully created user: " + userName);
+        LOGGER.info("Successfully created user: " + userName);
 
         return "registration-confirmation";
     }
