@@ -43,8 +43,7 @@ public class RegistrationController {
             @Valid @ModelAttribute("CreateUserDto") CreateUserDto createUserDto,
             BindingResult bindingResult,
             Model model) {
-
-        String userName = createUserDto.getUserName();
+        final String userName = createUserDto.getUserName();
         LOGGER.info("Processing registration form for: " + userName);
 
         if (bindingResult.hasErrors()) {

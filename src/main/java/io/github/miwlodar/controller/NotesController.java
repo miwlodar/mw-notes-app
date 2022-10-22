@@ -3,7 +3,6 @@ package io.github.miwlodar.controller;
 
 import io.github.miwlodar.entity.Note;
 import io.github.miwlodar.service.NotesService;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +21,7 @@ public class NotesController {
 
     @GetMapping
     public String listNotes(Model model) {
-        List<Note> notes = notesService.findAll();
+        final List<Note> notes = notesService.findAll();
         model.addAttribute("notes", notes);
 
         return "/notes/list-notes";
@@ -30,23 +29,23 @@ public class NotesController {
 
     @GetMapping("/form-for-add")
     public String formForAdd(Model model) {
-        Note note = new Note();
+        final Note note = new Note();
         model.addAttribute("notes", note);
 
         return "/notes/notes-form";
     }
 
     @GetMapping("/form-for-update")
-    public String formForUpdate(@RequestParam("noteId") Long id, Model model) {
-        Note note = notesService.findById(id);
+    public String formForUpdate(@RequestParam("noteId") Long noteId, Model model) {
+        final Note note = notesService.findById(noteId);
         model.addAttribute("notes", note);
 
         return "/notes/notes-form";
     }
 
     @PostMapping("/save")
-    public String saveNote(@ModelAttribute("notes") Note theNote) {
-        notesService.save(theNote);
+    public String saveNote(@ModelAttribute("notes") Note note) {
+        notesService.save(note);
 
         return "redirect:/notes";
     }
@@ -61,7 +60,7 @@ public class NotesController {
     @GetMapping("/search")
     public String search(@RequestParam("noteName") String name,
                          Model model) {
-        List<Note> notes = notesService.searchBy(name);
+        final List<Note> notes = notesService.searchBy(name);
         model.addAttribute("notes", notes);
 
         return "/notes/list-notes";

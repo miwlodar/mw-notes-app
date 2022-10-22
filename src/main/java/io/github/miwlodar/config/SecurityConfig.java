@@ -55,9 +55,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/notes/**").hasAnyRole("ADMIN", "USER")
-                .antMatchers("/resources/**").permitAll()
-                .antMatchers("/register/**").permitAll()
                 .and()
                 .formLogin()
                 .loginPage("/show-my-login-page")

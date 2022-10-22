@@ -23,7 +23,7 @@ Backend (mostly) app coded in Java (Spring framework)
 - Separate roles for users and admin (admin can access and delete all notes)
 - BCrypt password encryption
 - all CRUD operations for notes
-- basic frontend using Thymeleaf (REST API calls also possible)
+- basic frontend using Thymeleaf
 
 
 DB pre-populated with the following seed records:

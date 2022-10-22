@@ -4,7 +4,6 @@ package io.github.miwlodar.config;
 
 import io.github.miwlodar.dao.UserRepository;
 import io.github.miwlodar.entity.User;
-import io.github.miwlodar.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -19,13 +18,15 @@ import java.io.IOException;
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public CustomAuthenticationSuccessHandler(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         String userName = authentication.getName();
-
         User user = userRepository.findByUserName(userName);
 
         HttpSession session = request.getSession();
