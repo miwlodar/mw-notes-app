@@ -31,6 +31,9 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.4.0'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
     testImplementation 'org.assertj:assertj-core:3.23.1'
+    testImplementation group: 'com.h2database', name: 'h2', version: '2.1.214'
+    testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: '5.7.4'
+
 
     annotationProcessor 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.3'
     annotationProcessor 'org.glassfish.jaxb:jaxb-runtime:2.3.3'
@@ -44,4 +47,8 @@ java.sourceCompatibility = JavaVersion.VERSION_11
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
+}
+
+test {
+    useJUnitPlatform()
 }

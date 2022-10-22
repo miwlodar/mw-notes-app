@@ -1,8 +1,8 @@
 //implementation of User service interface, providing logic for a couple of methods for accessing User data
 package io.github.miwlodar.service;
 
-import io.github.miwlodar.dao.RolesRepository;
-import io.github.miwlodar.dao.UserRepository;
+import io.github.miwlodar.db.RolesRepository;
+import io.github.miwlodar.db.UsersRepository;
 import io.github.miwlodar.entity.Role;
 import io.github.miwlodar.entity.User;
 import io.github.miwlodar.user.CreateUserDto;
@@ -21,14 +21,14 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
+    private final UsersRepository usersRepository;
 
     private final RolesRepository rolesRepository;
 
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, RolesRepository rolesRepository, BCryptPasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
+    public UserServiceImpl(UsersRepository usersRepository, RolesRepository rolesRepository, BCryptPasswordEncoder passwordEncoder) {
+        this.usersRepository = usersRepository;
         this.rolesRepository = rolesRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByUserName(String userName) {
         // checking the database if the user already exists
-        return userRepository.findByUserName(userName);
+        return usersRepository.findByUserName(userName);
     }
 
     @Override
@@ -52,13 +52,13 @@ public class UserServiceImpl implements UserService {
         // giving user default role of "user"
         user.setRoles(Set.of(rolesRepository.findByName("ROLE_USER").get()));
 
-        userRepository.save(user);
+        usersRepository.save(user);
     }
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        User user = userRepository.findByUserName(userName);
+        User user = usersRepository.findByUserName(userName);
 
         if (user == null) {
             throw new UsernameNotFoundException("Invalid username or password.");
