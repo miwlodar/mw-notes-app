@@ -19,7 +19,7 @@ class UserServiceImplTest {
     private UserService userService;
 
     @Test
-    public void testFindByUserName() {
+    public void findByUserName() {
         jdbcTemplate.execute("insert into users (username,password,first_name,last_name,email) VALUES ('mike','$2a$10$XihOJgGY/Dir3fXOo8Cfour967tds1UUC/THA3wBWy49XoxePu/Su','Mike','Smith','mike@gmail.com');");
 
         User user = userService.findByUserName("mike");

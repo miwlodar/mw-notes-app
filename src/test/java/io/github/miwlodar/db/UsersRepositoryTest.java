@@ -1,6 +1,7 @@
 package io.github.miwlodar.db;
 
 import io.github.miwlodar.entity.User;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -20,8 +21,13 @@ class UsersRepositoryTest {
     @Autowired
     private UsersRepository usersRepository;
 
+    @BeforeEach
+    void addUser() {
+        jdbcTemplate.execute("insert into users (username,password,first_name,last_name,email) VALUES ('eh','$2a$10$XihOJgGY/Dir3fXOo8Cfour967tds1UUC/THA3wBWy49XoxePu/Su','Mike','Smith','mike@gmail.com');");
+    }
+
     @Test
-    void testExample() throws Exception { // testFindAll
+    void repositoryWorksProperly() throws Exception { // testFindAll
         assertEquals(0, usersRepository.count());
 
 //        User user = new User();
@@ -32,7 +38,6 @@ class UsersRepositoryTest {
 //        user.setLastName("Smith");
 //        user.setEmail("mike@gmail.com");
 //        usersRepository.save(user);
-        jdbcTemplate.execute("insert into users (username,password,first_name,last_name,email) VALUES ('eh','$2a$10$XihOJgGY/Dir3fXOo8Cfour967tds1UUC/THA3wBWy49XoxePu/Su','Mike','Smith','mike@gmail.com');");
         // ^ before all
 
         List<User> users = usersRepository.findAll();
@@ -46,6 +51,7 @@ class UsersRepositoryTest {
         assertNotNull(retrievedUser.getId());
     }
 
-    // add testFindByUserName - bo find all juz jest powyzej :))
+//    @Test
 
+    // add testFindByUserName - bo find all juz jest powyzej :))
 }
