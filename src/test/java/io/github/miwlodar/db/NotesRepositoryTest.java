@@ -28,6 +28,7 @@
 //    }
 //
 //    @Test
+//    @DisplayName("NotesRepository test")
 //    void repositoryWorksProperly() throws Exception { // testFindAll
 //        assertEquals(0, notesRepository.count());
 //

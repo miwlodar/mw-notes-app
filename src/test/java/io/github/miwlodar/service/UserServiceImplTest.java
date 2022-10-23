@@ -2,6 +2,7 @@ package io.github.miwlodar.service;
 
 import io.github.miwlodar.db.UsersRepository;
 import io.github.miwlodar.entity.User;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +20,7 @@ class UserServiceImplTest {
     private UserService userService;
 
     @Test
+    @DisplayName("Finding user by userName")
     public void findByUserName() {
         jdbcTemplate.execute("insert into users (username,password,first_name,last_name,email) VALUES ('mike','$2a$10$XihOJgGY/Dir3fXOo8Cfour967tds1UUC/THA3wBWy49XoxePu/Su','Mike','Smith','mike@gmail.com');");
 
