@@ -2,7 +2,7 @@
 package io.github.miwlodar.controller;
 
 import io.github.miwlodar.entity.User;
-import io.github.miwlodar.service.UserService;
+import io.github.miwlodar.service.UsersService;
 import io.github.miwlodar.user.CreateUserDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +21,7 @@ import javax.validation.Valid;
 public class RegistrationController {
 
     @Autowired
-    private UserService userService;
+    private UsersService usersService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationController.class);
 
@@ -51,7 +51,7 @@ public class RegistrationController {
         }
 
         // checking the DB if user already exists
-        final User existing = userService.findByUserName(userName);
+        final User existing = usersService.findByUserName(userName);
 
         if (existing != null) {
             model.addAttribute("CreateUserDto", new CreateUserDto());
@@ -61,7 +61,7 @@ public class RegistrationController {
             return "registration-form";
         }
 
-        userService.save(createUserDto);
+        usersService.save(createUserDto);
         LOGGER.info("Successfully created user: " + userName);
 
         return "registration-confirmation";

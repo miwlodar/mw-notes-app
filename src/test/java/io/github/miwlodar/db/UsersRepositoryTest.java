@@ -1,6 +1,7 @@
 package io.github.miwlodar.db;
 
 import io.github.miwlodar.entity.User;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,28 +25,21 @@ class UsersRepositoryTest {
 
     @BeforeEach
     void addUser() {
-        jdbcTemplate.execute("insert into users (username,password,first_name,last_name,email) VALUES ('eh','$2a$10$XihOJgGY/Dir3fXOo8Cfour967tds1UUC/THA3wBWy49XoxePu/Su','Mike','Smith','mike@gmail.com');");
+        jdbcTemplate.execute("insert into users (username,password,first_name,last_name,email) VALUES ('mickey','$2a$10$XihOJgGY/Dir3fXOo8Cfour967tds1UUC/THA3wBWy49XoxePu/Su','Mike','Smith','mike@gmail.com');");
+    }
+
+    @AfterEach
+    void cleanDb() {
+        jdbcTemplate.execute("delete from users;");
     }
 
     @Test
-    @DisplayName("Testing UserRepository")
-    void repositoryWorksProperly() throws Exception { // testFindAll
-//        assertEquals(0, usersRepository.count());
-
-//        User user = new User();
-//        user.setId(300L);
-//        user.setUserName("mike");
-//        user.setPassword("$2a$10$XihOJgGY/Dir3fXOo8Cfour967tds1UUC/THA3wBWy49XoxePu/Su");
-//        user.setFirstName("Mike");
-//        user.setLastName("Smith");
-//        user.setEmail("mike@gmail.com");
-//        usersRepository.save(user);
-        // ^ before all
-
+    @DisplayName("UsersRepository retrieves all users")
+    void findAll() throws Exception {
         List<User> users = usersRepository.findAll();
         assertEquals(1, users.size());
         User retrievedUser = users.get(0);
-        assertEquals("eh", retrievedUser.getUserName());
+        assertEquals("mickey", retrievedUser.getUserName());
         assertEquals("$2a$10$XihOJgGY/Dir3fXOo8Cfour967tds1UUC/THA3wBWy49XoxePu/Su", retrievedUser.getPassword());
         assertEquals("Mike", retrievedUser.getFirstName());
         assertEquals("Smith", retrievedUser.getLastName());
@@ -53,7 +47,27 @@ class UsersRepositoryTest {
         assertNotNull(retrievedUser.getId());
     }
 
-//    @Test
+    @Test
+    @DisplayName("UsersRepository retrieves user by ID")
+    void findById() throws Exception {
+        User retrievedUser = usersRepository.findById(2L).get();
+        assertEquals("mickey", retrievedUser.getUserName());
+        assertEquals("$2a$10$XihOJgGY/Dir3fXOo8Cfour967tds1UUC/THA3wBWy49XoxePu/Su", retrievedUser.getPassword());
+        assertEquals("Mike", retrievedUser.getFirstName());
+        assertEquals("Smith", retrievedUser.getLastName());
+        assertEquals("mike@gmail.com", retrievedUser.getEmail());
+        assertNotNull(retrievedUser.getId());
+    }
 
-    // add testFindByUserName - bo find all juz jest powyzej :))
+    @Test
+    @DisplayName("UsersRepository retrieves user by userName")
+    void findByUserName() throws Exception {
+        User retrievedUser = usersRepository.findByUserName("mickey");
+        assertEquals("mickey", retrievedUser.getUserName());
+        assertEquals("$2a$10$XihOJgGY/Dir3fXOo8Cfour967tds1UUC/THA3wBWy49XoxePu/Su", retrievedUser.getPassword());
+        assertEquals("Mike", retrievedUser.getFirstName());
+        assertEquals("Smith", retrievedUser.getLastName());
+        assertEquals("mike@gmail.com", retrievedUser.getEmail());
+        assertNotNull(retrievedUser.getId());
+    }
 }

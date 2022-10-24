@@ -19,7 +19,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UsersServiceImpl implements UsersService {
 
     private final UsersRepository usersRepository;
 
@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
 
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UsersRepository usersRepository, RolesRepository rolesRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UsersServiceImpl(UsersRepository usersRepository, RolesRepository rolesRepository, BCryptPasswordEncoder passwordEncoder) {
         this.usersRepository = usersRepository;
         this.rolesRepository = rolesRepository;
         this.passwordEncoder = passwordEncoder;

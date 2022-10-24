@@ -5,7 +5,7 @@ import io.github.miwlodar.entity.User;
 import io.github.miwlodar.user.CreateUserDto;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface UserService extends UserDetailsService {
+public interface UsersService extends UserDetailsService {
 
 	User findByUserName(String userName);
 
