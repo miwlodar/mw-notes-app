@@ -45,7 +45,10 @@ class NotesServiceImplTest {
         user.setLastName("Bravo");
         user.setPassword("'$2a$10$XihOJgGY/Dir3fXOo8Cfour967tds1UUC/THA3wBWy49XoxePu/Su'");
         user.setEmail("johnny@gmail.com");
-        user.setRoles(List.of(new Role("ROLE_USER")));
+        Role roleUser = new Role();
+        roleUser.setId(1L);
+        roleUser.setName("ROLE_USER");
+        user.setRoles(List.of(roleUser));
 
         userAdmin.setId(2L);
         userAdmin.setUserName("mickey");
@@ -53,7 +56,10 @@ class NotesServiceImplTest {
         userAdmin.setLastName("Smith");
         userAdmin.setPassword("'$2a$10$XihOJgGY/Dir3fXOo8Cfour967tds1UUC/THA3wBWy49XoxePu/Su'");
         userAdmin.setEmail("mike@gmail.com");
-        userAdmin.setRoles(List.of(new Role("ROLE_ADMIN")));
+        Role roleAdmin = new Role();
+        roleAdmin.setId(2L);
+        roleAdmin.setName("ROLE_ADMIN");
+        userAdmin.setRoles(List.of(roleAdmin));
 
         //creating 3 notes - 2 for USER and 1 for ADMIN
         Note note = new Note();

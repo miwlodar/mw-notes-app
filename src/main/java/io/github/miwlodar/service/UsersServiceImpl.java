@@ -41,7 +41,7 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public void save(CreateUserDto createUserDto) {
-        User user = new User();
+        final User user = new User();
 
         user.setUserName(createUserDto.getUserName());
         user.setPassword(passwordEncoder.encode(createUserDto.getPassword()));

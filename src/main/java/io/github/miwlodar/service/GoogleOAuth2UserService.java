@@ -13,8 +13,7 @@ public class GoogleOAuth2UserService extends DefaultOAuth2UserService {
 
     @Override
     public OAuth2User loadUser(final OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        OAuth2User user = super.loadUser(userRequest);
+        final OAuth2User user = super.loadUser(userRequest);
         return new GoogleOauth2User(user);
     }
-
 }

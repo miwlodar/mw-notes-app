@@ -1,5 +1,4 @@
 //class for accessing OAuth2User object (used for Google authentication) attributes
-
 package io.github.miwlodar.config;
 
 import org.springframework.security.core.GrantedAuthority;

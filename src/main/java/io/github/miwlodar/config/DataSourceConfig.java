@@ -1,5 +1,4 @@
 //class for datasource config, required for custom registration
-
 package io.github.miwlodar.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;

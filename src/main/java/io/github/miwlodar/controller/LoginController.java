@@ -1,5 +1,4 @@
 //1 of 3 controllers - handling login page (and access denied)
-
 package io.github.miwlodar.controller;
 
 import org.springframework.stereotype.Controller;

@@ -20,14 +20,14 @@ import javax.validation.Valid;
 @RequestMapping("/register")
 public class RegistrationController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationController.class);
+
     @Autowired
     private UsersService usersService;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationController.class);
-
     @InitBinder
     public void initBinder(WebDataBinder dataBinder) {
-        StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+        final StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
         dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
     }
 

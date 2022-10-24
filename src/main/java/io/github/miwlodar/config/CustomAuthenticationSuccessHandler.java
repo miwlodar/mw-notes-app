@@ -1,5 +1,4 @@
 //class for handling the request after successful authentication - either using Google or in a custom way
-
 package io.github.miwlodar.config;
 
 import io.github.miwlodar.db.UsersRepository;

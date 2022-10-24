@@ -48,7 +48,10 @@ class UsersServiceImplTest {
         user.setLastName("Bravo");
         user.setPassword("'$2a$10$XihOJgGY/Dir3fXOo8Cfour967tds1UUC/THA3wBWy49XoxePu/Su'");
         user.setEmail("johnny@gmail.com");
-        user.setRoles(List.of(new Role("ROLE_USER")));
+        Role roleUser = new Role();
+        roleUser.setId(1L);
+        roleUser.setName("ROLE_USER");
+        user.setRoles(List.of(roleUser));
 
         //mocking the DB (usersRepository) responses
         when(usersRepository.findByUserName(user.getUserName())).thenReturn(user);

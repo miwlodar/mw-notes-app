@@ -1,5 +1,4 @@
 //security configuration class for either Google authenticated users or users authenticated in a custom way
-
 package io.github.miwlodar.config;
 
 import io.github.miwlodar.service.GoogleOAuth2UserService;
@@ -34,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
+        final DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
         auth.setUserDetailsService(usersService); //set the custom user details service
         auth.setPasswordEncoder(passwordEncoder()); //set the password encoder - bcrypt
         return auth;
