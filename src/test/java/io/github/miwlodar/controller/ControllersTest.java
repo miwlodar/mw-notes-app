@@ -1,5 +1,6 @@
 package io.github.miwlodar.controller;
 
+import io.github.miwlodar.entity.Note;
 import io.github.miwlodar.service.NotesServiceImpl;
 import io.github.miwlodar.service.UsersServiceImpl;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +16,11 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.List;
+
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -31,7 +37,7 @@ public class ControllersTest {
     private NotesServiceImpl notesServiceImpl;
 
     @Test
-    @DisplayName("Home page works properly")
+    @DisplayName("Home page works properly for any user")
     public void homePageWorksProperly() throws Exception {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/"))
                 .andExpect(status().isOk()).andReturn();
@@ -41,7 +47,7 @@ public class ControllersTest {
     }
 
     @Test
-    @DisplayName("Login page works properly")
+    @DisplayName("Login page works properly for any user")
     public void loginPageWorksProperly() throws Exception {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/show-my-login-page"))
                 .andExpect(status().isOk()).andReturn();
@@ -69,7 +75,17 @@ public class ControllersTest {
     @Test
     @DisplayName("Authorised user can access their own notes")
     @WithMockUser(username = "johnny", roles = {"USER"})
-    public void notesAccessibleForUser() throws Exception {
+    public void notesPageAccessibleByAuthorizedUser() throws Exception {
+        Note note = new Note();
+
+        note.setId(1L);
+        note.setOwner("example@example.com");
+        note.setTitle("Lorem ipsum");
+        note.setContent("Lorem ipsum dolor sit amet");
+        note.setCreated(Timestamp.from(Instant.now()));
+        note.setLastEdited(Timestamp.from(Instant.now()));
+
+        when(notesServiceImpl.findAll()).thenReturn(List.of(note));
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/notes"))
                 .andExpect(status().isOk()).andReturn();
 

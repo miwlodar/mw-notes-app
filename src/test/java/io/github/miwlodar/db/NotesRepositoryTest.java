@@ -25,7 +25,8 @@ class NotesRepositoryTest {
 
     @BeforeEach
     void addUser() {
-        jdbcTemplate.execute("insert into notes (id, title, content, owner, created, last_edited) VALUES (1, 'Example note', 'Exemplary content of an exemplary note','mike@gmail.com', NOW(), NOW());");
+        jdbcTemplate.execute("insert into notes (title, content, owner, created, last_edited) VALUES ('BB Example note', 'Exemplary content of an exemplary note','mike@gmail.com', NOW(), NOW());");
+        jdbcTemplate.execute("insert into notes (title, content, owner, created, last_edited) VALUES ('AA Example note', 'Exemplary content of an exemplary note2','johnny@gmail.com', NOW(), NOW());");
     }
 
     @AfterEach
@@ -34,24 +35,36 @@ class NotesRepositoryTest {
     }
 
     @Test
-    @DisplayName("NotesRepository retrieves all notes")
-    void findAll() throws Exception {
-        List<Note> notes = notesRepository.findAll();
+    @DisplayName("Method findAllByOrderByTitleAsc works properly")
+    void findAllOrder() throws Exception {
+        List<Note> notes = notesRepository.findAllByOrderByTitleAsc();
+        assertEquals(2, notes.size());
+        Note retrievedNote = notes.get(0);
+        assertEquals("AA Example note", retrievedNote.getTitle());
+        assertEquals("Exemplary content of an exemplary note2", retrievedNote.getContent());
+        assertEquals("johnny@gmail.com", retrievedNote.getOwner());
+        assertNotNull(retrievedNote.getId());
+    }
+
+    @Test
+    @DisplayName("Method findAllByOwnerOrderByTitleAsc works properly")
+    void findAllByOwner() throws Exception {
+        List<Note> notes = notesRepository.findAllByOwnerOrderByTitleAsc("mike@gmail.com");
         assertEquals(1, notes.size());
         Note retrievedNote = notes.get(0);
-        assertEquals(1, retrievedNote.getId());
-        assertEquals("Example note", retrievedNote.getTitle());
+        assertEquals("BB Example note", retrievedNote.getTitle());
         assertEquals("Exemplary content of an exemplary note", retrievedNote.getContent());
         assertEquals("mike@gmail.com", retrievedNote.getOwner());
         assertNotNull(retrievedNote.getId());
     }
 
     @Test
-    @DisplayName("UserRepository retrieves user by ID")
-    void findById() throws Exception {
-        Note retrievedNote = notesRepository.findById(1L).get();
-        assertEquals(1, retrievedNote.getId());
-        assertEquals("Example note", retrievedNote.getTitle());
+    @DisplayName("Method findByTitleContainsOrContentContainsAllIgnoreCase works properly")
+    void findByContains() throws Exception {
+        List<Note> notes = notesRepository.findByTitleContainsOrContentContainsAllIgnoreCase("BB", "BB");
+        assertEquals(1, notes.size());
+        Note retrievedNote = notes.get(0);
+        assertEquals("BB Example note", retrievedNote.getTitle());
         assertEquals("Exemplary content of an exemplary note", retrievedNote.getContent());
         assertEquals("mike@gmail.com", retrievedNote.getOwner());
         assertNotNull(retrievedNote.getId());

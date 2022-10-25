@@ -60,7 +60,7 @@ class UsersRepositoryTest {
     }
 
     @Test
-    @DisplayName("UsersRepository retrieves user by userName")
+    @DisplayName("Method findByUserName works properly")
     void findByUserName() throws Exception {
         User retrievedUser = usersRepository.findByUserName("mickey");
         assertEquals("mickey", retrievedUser.getUserName());

@@ -1,8 +1,6 @@
 package io.github.miwlodar.db;
 
-import io.github.miwlodar.entity.Note;
 import io.github.miwlodar.entity.Role;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,16 +29,18 @@ class RolesRepositoryTest {
     }
 
     @Test
-    @DisplayName("RolesRepository retrieves all records")
+    @DisplayName("Method findByName works properly")
     void findAll() throws Exception {
-        List<Role> roles = rolesRepository.findAll();
-        assertEquals(2, roles.size());
+        List<Role> roles = List.of(rolesRepository.findByName("ROLE_USER").get());
+        assertEquals(1, roles.size());
+        List<Role> roles2 = List.of(rolesRepository.findByName("ROLE_USER").get(), rolesRepository.findByName("ROLE_ADMIN").get());
+        assertEquals(2, roles2.size());
 
-        Role userRole = roles.get(0);
+        Role userRole = roles2.get(0);
         assertEquals(1, userRole.getId());
         assertEquals("ROLE_USER", userRole.getName());
 
-        Role adminRole = roles.get(1);
+        Role adminRole = roles2.get(1);
         assertEquals(2, adminRole.getId());
         assertEquals("ROLE_ADMIN", adminRole.getName());
 
