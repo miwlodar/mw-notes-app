@@ -13,7 +13,7 @@ Backend (mostly) app coded in Java (Spring framework)
 - Spring (incl. Spring Boot, Spring MVC, Spring REST, Spring Security)
 - Hibernate
 - MySQL and MySQL Workbench
-- Maven
+- Gradle
 - Thymeleaf (simple front-end)
 
 
@@ -24,6 +24,8 @@ Backend (mostly) app coded in Java (Spring framework)
 - BCrypt password encryption
 - all CRUD operations for notes
 - basic frontend using Thymeleaf
+
+JUnit and Mockito tests included in the app.
 
 
 DB pre-populated with the following seed records:
